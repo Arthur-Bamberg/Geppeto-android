@@ -1,16 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-
-function TextButton() {
-  return <Text>Click me!</Text>;
-}
+import { LoginScreen } from './screens/login/login';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Hello world!</Text>
       <StatusBar style="auto" />
-      <TextButton />
+      <LoginScreen />
     </View>
   );
 }
@@ -18,8 +14,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#24232A',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });
