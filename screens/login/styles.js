@@ -5,18 +5,21 @@ export const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.background,
-      padding: 20,
+      width: '100%'
     },
     header: {
       backgroundColor: colors.header,
       paddingVertical: 20,
-      paddingHorizontal: 10,
-      borderRadius: 5,
     },
     headerText: {
+      textAlign: 'center',
       color: colors.text,
       fontSize: 24,
       fontWeight: 'bold',
+    },
+    image: {
+      width: 200,
+      height: 200,
     },
     form: {
       marginTop: 50,

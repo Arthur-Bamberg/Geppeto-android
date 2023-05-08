@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { styles } from './styles';
 
 export const LoginScreen = () => {
@@ -13,8 +13,9 @@ export const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Login</Text>
+        <Text style={styles.headerText}>Geppeto Assistant</Text>
       </View>
+      <Image source={require('../../assets/logo.png')}/>
       <View style={styles.form}>
         <TextInput
           style={styles.input}

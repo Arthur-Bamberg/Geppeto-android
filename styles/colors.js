@@ -1,8 +1,8 @@
 export const colors = {
     background: '#333333',
-    accent: '#B19CD9',
+    accent: '#6B3E99',
     text: '#FFFFFF',
     textBubble: '#CCCCCC',
-    header: '#6B3E99',
+    header: '#230046',
   }
   
