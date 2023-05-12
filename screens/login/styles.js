@@ -8,8 +8,12 @@ export const styles = StyleSheet.create({
       width: '100%'
     },
     header: {
+      marginTop: 30,
+      width: '60%',
+      paddingVertical: 10,
       backgroundColor: colors.header,
-      paddingVertical: 20,
+      alignSelf: 'center',
+      borderRadius: 10,
     },
     headerText: {
       textAlign: 'center',
@@ -18,11 +22,14 @@ export const styles = StyleSheet.create({
       fontWeight: 'bold',
     },
     image: {
+      marginBottom: 25,
       width: 200,
       height: 200,
+      alignSelf: 'center',
     },
     form: {
-      marginTop: 50,
+      marginTop: 20,
+      paddingHorizontal: 20,
     },
     input: {
       backgroundColor: colors.textBubble,

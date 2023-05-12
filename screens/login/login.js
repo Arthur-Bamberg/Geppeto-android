@@ -13,9 +13,14 @@ export const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <Image
+          source={require('../../assets/logo.png')}
+          style={styles.image}
+          resizeMode="contain"
+          accessibilityLabel="Example image"
+        />
         <Text style={styles.headerText}>Geppeto Assistant</Text>
       </View>
-      <Image source={require('../../assets/logo.png')}/>
       <View style={styles.form}>
         <TextInput
           style={styles.input}
