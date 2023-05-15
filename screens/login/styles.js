@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
       width: '100%'
     },
     header: {
-      marginTop: 30,
+      marginTop: '100px',
       width: '60%',
       paddingVertical: 10,
       backgroundColor: colors.header,
@@ -18,20 +18,24 @@ export const styles = StyleSheet.create({
     headerText: {
       textAlign: 'center',
       color: colors.text,
-      fontSize: 24,
+      fontFamily: 'Caveat',
+      fontSize: 30,
       fontWeight: 'bold',
     },
     image: {
       marginBottom: 25,
-      width: 200,
-      height: 200,
+      width: '50vw',
+      maxWidth: '50vh',
+      height: '50vh',
+      maxHeight: '50vw',
       alignSelf: 'center',
     },
     form: {
-      marginTop: 20,
+      marginTop: '50px',
       paddingHorizontal: 20,
     },
     input: {
+      fontFamily: 'Roboto-Regular',
       backgroundColor: colors.textBubble,
       paddingVertical: 10,
       paddingHorizontal: 20,
