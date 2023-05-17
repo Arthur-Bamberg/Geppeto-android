@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import { LoginScreen } from './screens/login/login';
+import { LoginScreen } from './screens/login';
+import { ChatScreen } from './screens/chat';
 import { useFonts } from 'expo-font';
 
 export default function App() {
@@ -10,13 +11,14 @@ export default function App() {
   });
 
   if (!fontsLoaded) {
-    return null; // or render a loading indicator
+    return null; // TODO: Add a loading screen
   }
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <LoginScreen />
+      {/* <LoginScreen /> */}
+      <ChatScreen />
     </View>
   );
 }

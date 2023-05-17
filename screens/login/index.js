@@ -16,7 +16,8 @@ export const LoginScreen = () => {
     return emailPattern.test(email);
   }
 
-  const validatePassword = (password) => {
+  const validatePassword = (password) => { //ExamplePassword123!
+    // TODO: Add password requirements to the error modal
     // Password requirements:
     // - At least 8 characters long
     // - Contains at least one uppercase letter
