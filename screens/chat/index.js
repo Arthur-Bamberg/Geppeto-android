@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 
 export const ChatScreen = () => {
@@ -23,6 +24,7 @@ export const ChatScreen = () => {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+                <Ionicons name="arrow-back-outline" style={styles.backMenu} size={30} color="white" />
                 <Text style={styles.headerText}>Geppeto Assistant</Text>
             </View>
             <View style={styles.chatContainer}>
@@ -46,7 +48,7 @@ export const ChatScreen = () => {
                     onChangeText={setInputMessage}
                 />
                 <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-                    <Text style={styles.sendButtonText}>Send</Text>
+                    <Ionicons name="paper-plane-outline" size={20} color="white" />
                 </TouchableOpacity>
             </View>
         </View>
