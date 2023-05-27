@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import { LoginScreen } from './screens/login';
 import { ChatScreen } from './screens/chat';
+import { ChatMenuScreen } from './screens/chatMenu';
 import { useFonts } from 'expo-font';
 
 export default function App() {
@@ -18,7 +19,8 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar style="auto" />
       {/* <LoginScreen /> */}
-      <ChatScreen />
+      {/* <ChatScreen /> */}
+      <ChatMenuScreen />
     </View>
   );
 }
