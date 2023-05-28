@@ -7,12 +7,32 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.background,
     },
-    chatItem: {
-        padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.textBubble,
+    chatItemsContainer: {
+        marginTop: 50,
     },
-    chatName: {
+    chatItem: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 16,
+        borderBottomWidth: 2,
+        borderBottomColor: colors.header,
+    },
+    chatIcon: {
+        color: colors.header,
+    },
+    chatText: {
+        marginLeft: 10,
+        fontSize: 16,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        fontFamily: 'Roboto-Regular',
         color: colors.text,
     },
+    nameHighlight: {
+        fontSize: 16,
+        fontFamily: 'Roboto-Regular',
+        fontWeight: 'bold',
+    }
 });

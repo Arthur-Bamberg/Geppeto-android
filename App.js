@@ -19,8 +19,8 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar style="auto" />
       {/* <LoginScreen /> */}
-      {/* <ChatScreen /> */}
-      <ChatMenuScreen />
+      <ChatScreen />
+      {/* <ChatMenuScreen /> */}
     </View>
   );
 }

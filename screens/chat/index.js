@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { ChatHeader } from '../../components/ChatHeader';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 
 export const ChatScreen = () => {
-    const messagesMock = require("../../messages.json");
+    const messagesMock = require("./messages.json");
 
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState(messagesMock);
@@ -23,10 +24,7 @@ export const ChatScreen = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Ionicons name="arrow-back-outline" style={styles.backMenu} size={30} color="white" />
-                <Text style={styles.headerText}>Geppeto Assistant</Text>
-            </View>
+            <ChatHeader />
             <View style={styles.chatContainer}>
                 {messages.map((message, index) => (
                     <View

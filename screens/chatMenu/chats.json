@@ -1,0 +1,17 @@
+[
+    {
+        "id": "1",
+        "name": "Chat 1",
+        "lastMessage": "Last message"
+    },
+    {
+        "id": "2",
+        "name": "Chat 2",
+        "lastMessage": "Last message"
+    },
+    {
+        "id": "3",
+        "name": "Chat 3",
+        "lastMessage": "Last message"
+    }
+]

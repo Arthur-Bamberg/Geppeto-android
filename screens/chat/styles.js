@@ -7,28 +7,6 @@ export const styles = StyleSheet.create({
         backgroundColor: colors.background,
         width: '100%'
     },
-    header: {
-        position: 'fixed',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        zIndex: 1,
-        backgroundColor: colors.header,
-        paddingVertical: 10,
-        alignItems: 'center',
-    },
-    backMenu: {
-        marginLeft: 10,
-    },
-    headerText: {
-        textAlign: 'center',
-        width: '100%',
-        marginRight: 50,
-        color: colors.text,
-        fontFamily: 'Caveat',
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
     chatContainer: {
         marginTop: 50,
         marginBottom: 30,
@@ -64,14 +42,12 @@ export const styles = StyleSheet.create({
     sendButton: {
         backgroundColor: colors.accent,
         padding: 10,
-        borderRadius: 7,
     },
     input: {
         width: '100%',
         color: colors.text,
         backgroundColor: colors.textBubble,
         fontFamily: 'Roboto-Regular',
-        paddingVertical: 10,
-        borderRadius: 7,
+        paddingVertical: 13,
     }
 });
