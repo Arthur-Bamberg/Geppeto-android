@@ -42,12 +42,17 @@ export const styles = StyleSheet.create({
     sendButton: {
         backgroundColor: colors.accent,
         padding: 10,
+        borderTopRightRadius: 7,
+        borderBottomRightRadius: 7,
     },
     input: {
         width: '100%',
+        paddingLeft: 10,
         color: colors.text,
         backgroundColor: colors.textBubble,
         fontFamily: 'Roboto-Regular',
         paddingVertical: 13,
+        borderTopLeftRadius: 7,
+        borderBottomLeftRadius: 7,
     }
 });
