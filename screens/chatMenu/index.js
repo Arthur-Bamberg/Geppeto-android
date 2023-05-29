@@ -1,6 +1,6 @@
 import React from 'react';
 import { styles } from './styles';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { ChatHeader } from '../../components/ChatHeader';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -23,6 +23,9 @@ export const ChatMenuScreen = () => {
                     </View>
                 )}
             />
+            <TouchableOpacity style={styles.plusButton}>
+                <Text style={styles.plusText}>+</Text>
+            </TouchableOpacity>
         </View>
     );
 };

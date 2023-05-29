@@ -34,5 +34,19 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Roboto-Regular',
         fontWeight: 'bold',
+    },
+    plusButton: {
+        position: 'fixed',
+        bottom: 50,
+        right: 20,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: colors.accent,
+    },
+    plusText: {
+        textAlign: 'center',
+        fontSize: 30,
+        color: colors.text
     }
 });
