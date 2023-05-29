@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
       width: '100%'
     },
     header: {
-      marginTop: '100px',
+      marginTop: 50,
       width: '60%',
       paddingVertical: 10,
       backgroundColor: colors.header,
@@ -55,4 +55,11 @@ export const styles = StyleSheet.create({
       fontWeight: 'bold',
       textAlign: 'center',
     },
+    registerButton: {
+      marginBottom: 20,
+    },
+    registerText: {
+      color: colors.header,
+      textDecorationLine: 'underline',
+    }
   });
