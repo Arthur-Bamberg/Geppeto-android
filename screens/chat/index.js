@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { ChatHeader } from '../../components/ChatHeader';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 
-export const ChatScreen = () => {
+export const ChatScreen = () => { //TODO: make receive the idChat
     const messagesMock = require("./messages.json");
+
+    const route = useRoute();
+    //const { chatId } = route.params;
 
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState(messagesMock);
@@ -24,7 +28,7 @@ export const ChatScreen = () => {
 
     return (
         <View style={styles.container}>
-            <ChatHeader />
+            <ChatHeader actualScreen={ 'Chat' } />
             <View style={styles.chatContainer}>
                 {messages.map((message, index) => (
                     <View

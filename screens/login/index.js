@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
 import { ErrorModal } from '../../components/ErrorModal';
 
@@ -11,6 +12,8 @@ export const LoginScreen = () => {
 
 	const [errorModalVisible, setErrorModalVisible] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+
+	const navigator = useNavigator();
 
 	const validateEmail = (email) => {
 		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,7 +47,7 @@ export const LoginScreen = () => {
 		} else if (!validatePassword(password)) {
 			handleError('Please enter a valid password.');
 		} else {
-			alert('Login successful!');
+			navigator.navigateToChatMenu();
 		}
 	};
 
@@ -56,7 +59,7 @@ export const LoginScreen = () => {
 		} else if (fullName.trim() === '') {
 			handleError('Please enter your full name.');
 		} else {
-			alert('Registration successful!');
+			navigator.navigateToChat(0);
 		}
 	};
 
