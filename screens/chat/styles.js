@@ -39,6 +39,10 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+    recordAudio: {
+        backgroundColor: colors.header,
+        padding: 10,
+    },
     sendButton: {
         backgroundColor: colors.accent,
         padding: 10,

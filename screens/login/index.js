@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
 import { ErrorModal } from '../../components/ErrorModal';
@@ -8,6 +9,8 @@ export const LoginScreen = () => {
 	const [mode, setMode] = useState('Login');
 	const [fullName, setFullName] = useState('');
 	const [email, setEmail] = useState('');
+
+	const [passwordVisibility, setPasswordVisibility] = useState(false);
 	const [password, setPassword] = useState('');
 
 	const [errorModalVisible, setErrorModalVisible] = useState(false);
@@ -63,13 +66,22 @@ export const LoginScreen = () => {
 		}
 	};
 
-	const changeMode = () => {
-		if (mode === 'Login') {
-			setMode('Register');
+	const handleResetPassword = () => {
+		if (!validateEmail(email)) {
+			handleError('Please enter a valid email address.');
+		} else if (fullName.trim() === '') {
+			handleError('Please enter your full name.');
 		} else {
-			setMode('Login');
+			changeMode('Login');
 		}
-	}
+	};
+
+	const changeMode = (newMode = null) => {
+		if (typeof newMode !== 'string') {
+			newMode = mode === 'Register' ? 'Login' : 'Register';
+		}
+		setMode(newMode);
+	};
 
 	return (
 		<View style={styles.container}>
@@ -84,44 +96,67 @@ export const LoginScreen = () => {
 			</View>
 			<View style={styles.form}>
 				<TouchableOpacity style={styles.registerButton} onPress={changeMode}>
-					<Text style={[styles.buttonText, styles.registerText]}>
-						{
-							mode === 'Login' ?
-								"Don't have an account? Register here."
-								:
-								'Already have an account? Login here.'
-						}
-					</Text>
+					<View>
+						<Text style={[styles.buttonText, styles.registerText]}>
+							{mode === 'Register' ?
+								'Already have an account? Login here.' :
+								"Don't have an account? Register here."}
+						</Text>
+					</View>
 				</TouchableOpacity>
-				{mode === 'Register' ?
+				{mode !== 'Login' ? (
 					<TextInput
 						style={styles.input}
 						placeholder="Full Name"
 						value={fullName}
 						onChangeText={setFullName}
 					/>
-					:
-					null
-				}
+				) : null}
 				<TextInput
 					style={styles.input}
 					placeholder="Email"
 					value={email}
 					onChangeText={setEmail}
 				/>
-				<TextInput
-					style={styles.input}
-					placeholder="Password"
-					secureTextEntry
-					value={password}
-					onChangeText={setPassword}
-				/>
-				<TouchableOpacity style={styles.button} onPress={
-					mode === 'Register' ?
-						handleRegister
-						:
-						handleLogin
-				}>
+				{mode !== 'Reset password' ? (
+					<View style={styles.inputContainer}>
+						<TextInput
+							style={styles.input}
+							placeholder="Password"
+							secureTextEntry={!passwordVisibility}
+							value={password}
+							onChangeText={setPassword}
+						/>
+						<Ionicons
+							style={styles.visibilityIcon}
+							onPress={() => setPasswordVisibility(!passwordVisibility)}
+							name="eye"
+							size={30}
+						/>
+					</View>
+				) : null}
+				{mode === 'Login' ? (
+					<TouchableOpacity
+						style={styles.registerButton}
+						onPress={() => {
+							changeMode('Reset password');
+						}}
+					>
+						<Text style={[styles.buttonText, styles.registerText]}>
+							Forgot your password?
+						</Text>
+					</TouchableOpacity>
+				) : null}
+				<TouchableOpacity
+					style={styles.button}
+					onPress={
+						mode === 'Register'
+							? handleRegister
+							: mode === 'Reset password'
+								? handleResetPassword
+								: handleLogin
+					}
+				>
 					<Text style={styles.buttonText}>{mode}</Text>
 				</TouchableOpacity>
 			</View>

@@ -28,6 +28,10 @@ export const ChatMenuScreen = () => {
                         <Text style={styles.chatText}>
                             <Text style={styles.nameHighlight}>{item.name}</Text>: {item.lastMessage}
                         </Text>
+                        <Ionicons //TODO: add delete chat functionality
+                            name="trash" 
+                            style={styles.trashIcon} 
+                            size={30} />
                     </TouchableOpacity>
                 )}
             />

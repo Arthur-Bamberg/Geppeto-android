@@ -26,7 +26,7 @@ export const ChatScreen = () => { //TODO: make receive the idChat
         setInputMessage('');
     };
 
-    return (
+    return ( //TODO: add voice message functionality
         <View style={styles.container}>
             <ChatHeader actualScreen={ 'Chat' } />
             <View style={styles.chatContainer}>
@@ -49,6 +49,9 @@ export const ChatScreen = () => { //TODO: make receive the idChat
                     value={inputMessage}
                     onChangeText={setInputMessage}
                 />
+                <TouchableOpacity style={styles.recordAudio} onPress={sendMessage}>
+                    <Ionicons name="mic" size={20} color="white" />
+                </TouchableOpacity>
                 <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
                     <Ionicons name="paper-plane-outline" size={20} color="white" />
                 </TouchableOpacity>

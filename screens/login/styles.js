@@ -34,6 +34,15 @@ export const styles = StyleSheet.create({
       marginTop: '50px',
       paddingHorizontal: 20,
     },
+    inputContainer: {
+      position: 'relative',
+    },
+    visibilityIcon: {
+      color: colors.header,
+      position: 'absolute',
+      right: 12,
+      top: 3,
+    },
     input: {
       fontFamily: 'Roboto-Regular',
       backgroundColor: colors.textBubble,

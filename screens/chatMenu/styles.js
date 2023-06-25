@@ -21,6 +21,10 @@ export const styles = StyleSheet.create({
     chatIcon: {
         color: colors.header,
     },
+    trashIcon: {
+        color: colors.header,
+        marginLeft: 'auto',
+    },
     chatText: {
         marginLeft: 10,
         fontSize: 16,
