@@ -4,7 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
 import { ErrorModal } from '../../components/ErrorModal';
-import * as text from './texts.json';
+import text from './texts.json';
+
+console.log(text);
 
 export const LoginScreen = () => {
 	const [mode, setMode] = useState(text.login);
@@ -13,6 +15,7 @@ export const LoginScreen = () => {
 
 	const [passwordVisibility, setPasswordVisibility] = useState(false);
 	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 
 	const [errorModalVisible, setErrorModalVisible] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -24,14 +27,8 @@ export const LoginScreen = () => {
 		return emailPattern.test(email);
 	};
 
-	const validatePassword = (password) => { //ExamplePassword123!
+	const validatePassword = (password) => {
 		// TODO: Add password requirements to the error modal
-		// Password requirements:
-		// - At least 8 characters long
-		// - Contains at least one uppercase letter
-		// - Contains at least one lowercase letter
-		// - Contains at least one digit
-		// - Contains at least one special character
 		const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 		return passwordPattern.test(password);
 	};
@@ -62,6 +59,8 @@ export const LoginScreen = () => {
 			handleError(text.password_error);
 		} else if (fullName.trim() === '') {
 			handleError(text.fullName_error);
+		} else if (password !== confirmPassword) {
+			handleError(text.password_match_error);
 		} else {
 			navigator.navigateToChat(0);
 		}
@@ -99,9 +98,7 @@ export const LoginScreen = () => {
 				<TouchableOpacity style={[styles.button, styles.registerButton]} onPress={changeMode}>
 					<View>
 						<Text style={[styles.buttonText, styles.buttonText]}>
-							{mode === text.register ?
-								text.login_text :
-								text.register_text}
+							{mode === text.register ? text.login_text : text.register_text}
 						</Text>
 					</View>
 				</TouchableOpacity>
@@ -119,14 +116,29 @@ export const LoginScreen = () => {
 					value={email}
 					onChangeText={setEmail}
 				/>
-				{mode !== text.reset_password ? (
+				<View style={styles.inputContainer}>
+					<TextInput
+						style={styles.input}
+						placeholder={text.password}
+						secureTextEntry={!passwordVisibility}
+						value={password}
+						onChangeText={setPassword}
+					/>
+					<Ionicons
+						style={styles.visibilityIcon}
+						onPress={() => setPasswordVisibility(!passwordVisibility)}
+						name="eye"
+						size={30}
+					/>
+				</View>
+				{mode === text.register ? (
 					<View style={styles.inputContainer}>
 						<TextInput
 							style={styles.input}
-							placeholder={text.password}
+							placeholder={text.confirm_password}
 							secureTextEntry={!passwordVisibility}
-							value={password}
-							onChangeText={setPassword}
+							value={confirmPassword}
+							onChangeText={setConfirmPassword}
 						/>
 						<Ionicons
 							style={styles.visibilityIcon}
@@ -161,7 +173,11 @@ export const LoginScreen = () => {
 					<Text style={styles.buttonText}>{mode}</Text>
 				</TouchableOpacity>
 			</View>
-			<ErrorModal errorMessage={errorMessage} toggleErrorModal={toggleErrorModal} errorModalVisible={errorModalVisible} />
+			<ErrorModal
+				errorMessage={errorMessage}
+				toggleErrorModal={toggleErrorModal}
+				errorModalVisible={errorModalVisible}
+			/>
 		</View>
 	);
 };
