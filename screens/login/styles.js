@@ -65,10 +65,7 @@ export const styles = StyleSheet.create({
       textAlign: 'center',
     },
     registerButton: {
+      backgroundColor: colors.header,
       marginBottom: 20,
-    },
-    registerText: {
-      color: colors.header,
-      textDecorationLine: 'underline',
     }
   });

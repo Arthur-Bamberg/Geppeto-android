@@ -1,0 +1,15 @@
+{
+    "email": "E-mail",
+    "password": "Senha",
+    "fullName": "Nome completo",
+    "confirm_password": "Confirmar senha",
+    "email_error": "Por favor, utilize um e-mail válido.",
+    "password_error": "Por favor, utilize uma senha válida.",
+    "fullName_error": "Por favor, insira seu nome completo.",
+    "login": "Entrar",
+    "login_text": "Já possui uma conta? Entre",
+    "register": "Cadastrar-se",
+    "register_text": "Não possui uma conta? Cadastre-se",
+    "reset_password": "Esqueci minha senha",
+    "reset_password_text": "Esqueceu sua senha? Clique aqui"
+}

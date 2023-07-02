@@ -4,9 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
 import { ErrorModal } from '../../components/ErrorModal';
+import * as text from './texts.json';
 
 export const LoginScreen = () => {
-	const [mode, setMode] = useState('Login');
+	const [mode, setMode] = useState(text.login);
 	const [fullName, setFullName] = useState('');
 	const [email, setEmail] = useState('');
 
@@ -46,9 +47,9 @@ export const LoginScreen = () => {
 
 	const handleLogin = () => {
 		if (!validateEmail(email)) {
-			handleError('Please enter a valid email address.');
+			handleError(text.email_error);
 		} else if (!validatePassword(password)) {
-			handleError('Please enter a valid password.');
+			handleError(text.password_error);
 		} else {
 			navigator.navigateToChatMenu();
 		}
@@ -56,11 +57,11 @@ export const LoginScreen = () => {
 
 	const handleRegister = () => {
 		if (!validateEmail(email)) {
-			handleError('Please enter a valid email address.');
+			handleError(text.email_error);
 		} else if (!validatePassword(password)) {
-			handleError('Please enter a valid password.');
+			handleError(text.password_error);
 		} else if (fullName.trim() === '') {
-			handleError('Please enter your full name.');
+			handleError(text.fullName_error);
 		} else {
 			navigator.navigateToChat(0);
 		}
@@ -68,17 +69,17 @@ export const LoginScreen = () => {
 
 	const handleResetPassword = () => {
 		if (!validateEmail(email)) {
-			handleError('Please enter a valid email address.');
+			handleError(text.email_error);
 		} else if (fullName.trim() === '') {
-			handleError('Please enter your full name.');
+			handleError(text.fullName_error);
 		} else {
-			changeMode('Login');
+			changeMode(text.login);
 		}
 	};
 
 	const changeMode = (newMode = null) => {
 		if (typeof newMode !== 'string') {
-			newMode = mode === 'Register' ? 'Login' : 'Register';
+			newMode = mode === text.register ? text.login : text.register;
 		}
 		setMode(newMode);
 	};
@@ -95,34 +96,34 @@ export const LoginScreen = () => {
 				<Text style={styles.headerText}>Geppeto Assistant</Text>
 			</View>
 			<View style={styles.form}>
-				<TouchableOpacity style={styles.registerButton} onPress={changeMode}>
+				<TouchableOpacity style={[styles.button, styles.registerButton]} onPress={changeMode}>
 					<View>
-						<Text style={[styles.buttonText, styles.registerText]}>
-							{mode === 'Register' ?
-								'Already have an account? Login here.' :
-								"Don't have an account? Register here."}
+						<Text style={[styles.buttonText, styles.buttonText]}>
+							{mode === text.register ?
+								text.login_text :
+								text.register_text}
 						</Text>
 					</View>
 				</TouchableOpacity>
-				{mode !== 'Login' ? (
+				{mode !== text.login ? (
 					<TextInput
 						style={styles.input}
-						placeholder="Full Name"
+						placeholder={text.fullName}
 						value={fullName}
 						onChangeText={setFullName}
 					/>
 				) : null}
 				<TextInput
 					style={styles.input}
-					placeholder="Email"
+					placeholder={text.email}
 					value={email}
 					onChangeText={setEmail}
 				/>
-				{mode !== 'Reset password' ? (
+				{mode !== text.reset_password ? (
 					<View style={styles.inputContainer}>
 						<TextInput
 							style={styles.input}
-							placeholder="Password"
+							placeholder={text.password}
 							secureTextEntry={!passwordVisibility}
 							value={password}
 							onChangeText={setPassword}
@@ -135,24 +136,24 @@ export const LoginScreen = () => {
 						/>
 					</View>
 				) : null}
-				{mode === 'Login' ? (
+				{mode === text.login ? (
 					<TouchableOpacity
-						style={styles.registerButton}
+						style={[styles.button, styles.registerButton]}
 						onPress={() => {
-							changeMode('Reset password');
+							changeMode(text.reset_password);
 						}}
 					>
-						<Text style={[styles.buttonText, styles.registerText]}>
-							Forgot your password?
+						<Text style={[styles.buttonText, styles.buttonText]}>
+							{text.reset_password_text}
 						</Text>
 					</TouchableOpacity>
 				) : null}
 				<TouchableOpacity
 					style={styles.button}
 					onPress={
-						mode === 'Register'
+						mode === text.register
 							? handleRegister
-							: mode === 'Reset password'
+							: mode === text.reset_password
 								? handleResetPassword
 								: handleLogin
 					}
