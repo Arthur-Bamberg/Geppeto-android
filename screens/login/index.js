@@ -6,8 +6,6 @@ import { styles } from './styles';
 import { ErrorModal } from '../../components/ErrorModal';
 import text from './texts.json';
 
-console.log(text);
-
 export const LoginScreen = () => {
 	const [mode, setMode] = useState(text.login);
 	const [fullName, setFullName] = useState('');
