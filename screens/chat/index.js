@@ -25,11 +25,9 @@ export const ChatScreen = () => {
         setRecording(null);
     };
 
-    const sendMessage = (content) => {
-        if (content.trim() === '') return;
-
+    const sendMessage = () => {
         const newMessage = {
-            content: content.trim(),
+            content: inputMessage.trim(),
             sender: 'sent',
         };
 
