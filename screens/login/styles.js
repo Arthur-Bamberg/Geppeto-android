@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     header: {
       marginTop: 50,
       width: '60%',
+      maxHeight: 200,
       paddingVertical: 10,
       backgroundColor: colors.header,
       alignSelf: 'center',
@@ -24,14 +25,12 @@ export const styles = StyleSheet.create({
     },
     image: {
       marginBottom: 25,
-      width: '50vw',
-      maxWidth: '50vh',
-      height: '50vh',
-      maxHeight: '50vw',
+      width: '100%',
+      height: '100%',
       alignSelf: 'center',
     },
     form: {
-      marginTop: '50px',
+      marginTop: 100,
       paddingHorizontal: 20,
     },
     inputContainer: {

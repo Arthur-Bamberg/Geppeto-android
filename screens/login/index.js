@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
 import { ErrorModal } from '../../components/ErrorModal';
+import { UserService } from '../../services/UserService';
 import text from './texts.json';
 
 export const LoginScreen = () => {
@@ -50,7 +51,7 @@ export const LoginScreen = () => {
 		}
 	};
 
-	const handleRegister = () => {
+	const handleRegister = async () => {
 		if (!validateEmail(email)) {
 			handleError(text.email_error);
 		} else if (!validatePassword(password)) {
@@ -60,7 +61,8 @@ export const LoginScreen = () => {
 		} else if (password !== confirmPassword) {
 			handleError(text.password_match_error);
 		} else {
-			navigator.navigateToChat(0);
+			console.log(await UserService.register(fullName, email, password));
+			// navigator.navigateToChat(0);
 		}
 	};
 
