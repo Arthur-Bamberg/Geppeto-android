@@ -5,6 +5,7 @@ import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
 import { ErrorModal } from '../../components/ErrorModal';
 import { UserService } from '../../services/UserService';
+import * as SecureStore from 'expo-secure-store';
 import text from './texts.json';
 
 export const LoginScreen = () => {
@@ -61,8 +62,13 @@ export const LoginScreen = () => {
 		} else if (password !== confirmPassword) {
 			handleError(text.password_match_error);
 		} else {
-			console.log(await UserService.register(fullName, email, password));
-			// navigator.navigateToChat(0);
+			const { token } = await UserService.register(fullName, email, password);
+			await SecureStore.setItemAsync(
+				'authToken',
+				token
+			);
+			console.log(await SecureStore.getItemAsync('authToken'));
+			navigator.navigateToChat(0);
 		}
 	};
 
