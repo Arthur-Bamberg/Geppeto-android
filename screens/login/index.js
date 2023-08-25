@@ -56,12 +56,7 @@ export const LoginScreen = () => {
 		} else if (!validatePassword(password)) {
 			handleError(text.password_error);
 		} else {
-			const { token } = await UserService.login( email, password);
-
-			await SecureStore.setItemAsync(
-				'authToken',
-				token
-			);
+			await UserService.login( email, password);
 
 			navigator.navigateToChatMenu();
 		}
@@ -77,12 +72,7 @@ export const LoginScreen = () => {
 		} else if (password !== confirmPassword) {
 			handleError(text.password_match_error);
 		} else {
-			const { token } = await UserService.register(fullName, email, password);
-
-			await SecureStore.setItemAsync(
-				'authToken',
-				token
-			);
+			await UserService.register(fullName, email, password);
 
 			navigator.navigateToChat(0);
 		}

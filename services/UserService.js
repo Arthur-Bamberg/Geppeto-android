@@ -1,7 +1,8 @@
 import axios from "axios";
+import * as SecureStore from 'expo-secure-store';
 
 export class UserService {
-  static authenticateUrl = 'http://172.16.7.133:3000/auth';  
+  static authenticateUrl = 'http://172.16.7.133:3000/auth';
   static userUrl = 'http://172.16.7.133:3000/users';
 
   static async register(name, email, password) {
@@ -15,7 +16,10 @@ export class UserService {
       }
     });
 
-    return data;
+    await SecureStore.setItemAsync(
+      'authToken',
+      data.token
+    );
   }
 
   static async login(email, password) {
@@ -28,6 +32,9 @@ export class UserService {
       }
     });
 
-    return data;
+    await SecureStore.setItemAsync(
+      'authToken',
+      data.token
+    );
   }
 }
