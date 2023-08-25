@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         backgroundColor: colors.background,
     },
     chatItemsContainer: {
-        marginTop: 50,
+        height: '100%',
     },
     chatItem: {
         display: 'flex',
@@ -28,9 +28,8 @@ export const styles = StyleSheet.create({
     chatText: {
         marginLeft: 10,
         fontSize: 16,
+        maxWidth: 300,
         overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis',
         fontFamily: 'Roboto-Regular',
         color: colors.text,
     },
@@ -40,15 +39,15 @@ export const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     plusButton: {
-        position: 'fixed',
-        bottom: 50,
-        right: 20,
+        bottom: 20,
+        left: 325,
         width: 50,
         height: 50,
-        borderRadius: 25,
+        borderRadius: 15,
         backgroundColor: colors.accent,
     },
     plusText: {
+        marginTop: 3,
         textAlign: 'center',
         fontSize: 30,
         color: colors.text

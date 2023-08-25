@@ -9,6 +9,14 @@ import * as SecureStore from 'expo-secure-store';
 import text from './texts.json';
 
 export const LoginScreen = () => {
+	(async () => {
+		const token = await SecureStore.getItemAsync('authToken');
+
+		if (token) {
+			navigator.navigateToChatMenu();
+		}
+	})();
+
 	const [mode, setMode] = useState(text.login);
 	const [fullName, setFullName] = useState('');
 	const [email, setEmail] = useState('');
@@ -42,12 +50,19 @@ export const LoginScreen = () => {
 		setErrorModalVisible(true);
 	};
 
-	const handleLogin = () => {
+	const handleLogin = async () => {
 		if (!validateEmail(email)) {
 			handleError(text.email_error);
 		} else if (!validatePassword(password)) {
 			handleError(text.password_error);
 		} else {
+			const { token } = await UserService.login( email, password);
+
+			await SecureStore.setItemAsync(
+				'authToken',
+				token
+			);
+
 			navigator.navigateToChatMenu();
 		}
 	};
@@ -63,11 +78,12 @@ export const LoginScreen = () => {
 			handleError(text.password_match_error);
 		} else {
 			const { token } = await UserService.register(fullName, email, password);
+
 			await SecureStore.setItemAsync(
 				'authToken',
 				token
 			);
-			console.log(await SecureStore.getItemAsync('authToken'));
+
 			navigator.navigateToChat(0);
 		}
 	};

@@ -18,25 +18,25 @@ export const ChatMenuScreen = () => {
                 data={chats}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <TouchableOpacity 
-                        style={styles.chatItem} 
+                    <TouchableOpacity
+                        style={styles.chatItem}
                         onPress={()=> navigator.navigateToChat(item.id)} >
-                        <Ionicons 
-                            name="chatbubble-ellipses-outline" 
-                            style={styles.chatIcon} 
+                        <Ionicons
+                            name="chatbubble-ellipses-outline"
+                            style={styles.chatIcon}
                             size={30} />
-                        <Text style={styles.chatText}>
-                            <Text style={styles.nameHighlight}>{item.name}</Text>: {item.lastMessage}
+                        <Text numberOfLines={1} style={styles.chatText}>
+                            <Text style={styles.nameHighlight}>{item.name}:</Text> {item.lastMessage}
                         </Text>
                         <Ionicons //TODO: add delete chat functionality
-                            name="trash" 
-                            style={styles.trashIcon} 
+                            name="trash"
+                            style={styles.trashIcon}
                             size={30} />
                     </TouchableOpacity>
                 )}
             />
-            <TouchableOpacity 
-                style={styles.plusButton} 
+            <TouchableOpacity
+                style={styles.plusButton}
                 onPress={()=> navigator.navigateToChat(0)}>
                 <Text style={styles.plusText}>+</Text>
             </TouchableOpacity>
