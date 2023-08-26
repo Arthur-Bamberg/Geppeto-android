@@ -15,4 +15,30 @@ export class SectionService {
 
         return data;
     }
+
+    static async delete(idSection) {
+        const token = await SecureStore.getItemAsync('authToken');
+
+        await axios.delete(`${SectionService.url}/${idSection}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+    static async create() {
+        const token = await SecureStore.getItemAsync('authToken');
+
+        const response = await axios.post(SectionService.url, {
+            name: 'New Section',
+            temperature: 0.8
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+
+        return response.data;
+    }
 }
