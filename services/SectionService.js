@@ -41,4 +41,8 @@ export class SectionService {
 
         return response.data;
     }
+
+    static async logout() {
+        await SecureStore.setItemAsync('authToken', '');
+    }
 }

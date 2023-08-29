@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { ChatHeader } from '../../components/ChatHeader';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +17,7 @@ export const ChatScreen = () => {
     const [recording, setRecording] = useState(null);
 
     const startRecording = async () => {
-        
+
         setRecording(true);
     };
 
@@ -39,19 +39,23 @@ export const ChatScreen = () => {
         <View style={styles.container}>
             <ChatHeader actualScreen={'Chat'} />
             <View style={styles.chatContainer}>
-                {messages.map((message, index) => (
-                    <View
-                        key={index}
-                        style={[
-                            styles.messageBubble,
-                            message.sender === 'sent'
-                                ? styles.sentMessage
-                                : styles.receivedMessage,
-                        ]}
-                    >
-                        <Text style={styles.messageText}>{message.content}</Text>
-                    </View>
-                ))}
+                <FlatList
+                    style={styles.flatList}
+                    data={messages}
+                    keyExtractor={(index) => index.toString()}
+                    renderItem={({ item: message }) => (
+                        <View
+                            style={[
+                                styles.messageBubble,
+                                message.sender === 'sent'
+                                    ? styles.sentMessage
+                                    : styles.receivedMessage,
+                            ]}
+                        >
+                            <Text style={styles.messageText}>{message.content}</Text>
+                        </View>
+                    )}
+                />
             </View>
             <View style={styles.inputContainer}>
                 <TextInput

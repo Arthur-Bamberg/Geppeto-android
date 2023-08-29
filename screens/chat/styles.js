@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
         width: '100%'
     },
     chatContainer: {
-        marginTop: 50,
         marginBottom: 30,
         flex: 1,
         padding: 10,
@@ -31,8 +30,10 @@ export const styles = StyleSheet.create({
         color: colors.text,
         fontFamily: 'Roboto-Regular',
     },
+    flatList: {
+        marginBottom: -40
+    },
     inputContainer: {
-        position: 'fixed',
         bottom: 0,
         width: '100%',
         flexDirection: 'row',
@@ -40,22 +41,29 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     recordAudio: {
+        marginBottom: 5,
+        paddingVertical: 13,
         backgroundColor: colors.header,
         padding: 10,
     },
     sendButton: {
+        marginRight: 5,
+        marginBottom: 5,
+        paddingVertical: 13,
         backgroundColor: colors.accent,
         padding: 10,
         borderTopRightRadius: 7,
         borderBottomRightRadius: 7,
     },
     input: {
-        width: '100%',
+        width: '76%',
+        marginBottom: 5,
+        marginLeft: 5,
         paddingLeft: 10,
         color: colors.text,
         backgroundColor: colors.textBubble,
         fontFamily: 'Roboto-Regular',
-        paddingVertical: 13,
+        paddingVertical: 10,
         borderTopLeftRadius: 7,
         borderBottomLeftRadius: 7,
     }

@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         backgroundColor: colors.background,
     },
     chatItemsContainer: {
-        height: '100%',
+        marginBottom: -50,
     },
     chatItem: {
         display: 'flex',
