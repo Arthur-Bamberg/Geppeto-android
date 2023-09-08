@@ -12,7 +12,7 @@ export const ChatMenuScreen = () => {
     const [sections, setSections] = useState([]);
 
     useEffect(() => {
-                getSections();
+        getSections();
     }, []);
 
     const getSections = async () => {
@@ -36,7 +36,7 @@ export const ChatMenuScreen = () => {
     const createSection = async () => {
         const section = await SectionService.create();
         setSections([...sections, section]);
-        // navigator.navigateToChat(section.idSection);
+        navigator.navigateToChat(section.idSection);
     };
 
     return (
@@ -49,7 +49,7 @@ export const ChatMenuScreen = () => {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.chatItem}
-                        onPress={()=> navigator.navigateToChat(0)} >
+                        onPress={()=> navigator.navigateToChat(item.idSection)} >
                         <Ionicons
                             name="chatbubble-ellipses-outline"
                             style={styles.chatIcon}

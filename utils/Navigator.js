@@ -3,12 +3,12 @@ import { useNavigation } from '@react-navigation/native';
 export const useNavigator = () => {
     const navigation = useNavigation();
 
-    const navigateTo = (screenName) => {
-        navigation.navigate(screenName);
+    const navigateTo = (screenName, dataObject) => {
+        navigation.navigate(screenName, dataObject);
     };
 
-    const navigateToChat = (chatId) => {
-        navigateTo('Chat', { chatId });
+    const navigateToChat = (idSection) => {
+        navigateTo('Chat', { idSection });
     };
 
     const navigateToChatMenu = () => {

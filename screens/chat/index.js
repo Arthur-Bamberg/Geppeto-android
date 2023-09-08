@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import { ChatHeader } from '../../components/ChatHeader';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import text from './texts.json';
+import { SectionService } from '../../services/SectionService';
 
-export const ChatScreen = () => {
-    const messagesMock = require('./messages.json');
-
-    const route = useRoute();
-    // const { chatId } = route.params;
+export const ChatScreen = ({ route }) => {
+    const { idSection } = route.params;
 
     const [inputMessage, setInputMessage] = useState('');
-    const [messages, setMessages] = useState(messagesMock);
+    const [messages, setMessages] = useState([]);
     const [recording, setRecording] = useState(null);
+
+    useEffect(() => {
+        getMessages();
+    }, []);
+
+    const getMessages = async () => {
+        const messages = await SectionService.getMessages(idSection);
+        setMessages(messages);
+    }
 
     const startRecording = async () => {
 
