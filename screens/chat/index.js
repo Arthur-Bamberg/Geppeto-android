@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import text from './texts.json';
 import { SectionService } from '../../services/SectionService';
+import { MessageService } from '../../services/MessageService';
 
 export const ChatScreen = ({ route }) => {
     const { idSection } = route.params;
@@ -23,7 +24,6 @@ export const ChatScreen = ({ route }) => {
     }
 
     const startRecording = async () => {
-
         setRecording(true);
     };
 
@@ -33,9 +33,12 @@ export const ChatScreen = ({ route }) => {
 
     const sendMessage = () => {
         const newMessage = {
+            type: 'PROMPT',
             content: inputMessage.trim(),
-            sender: 'sent',
+            idSection,
         };
+
+        MessageService.create(newMessage);
 
         setMessages([...messages, newMessage]);
         setInputMessage('');
@@ -53,7 +56,7 @@ export const ChatScreen = ({ route }) => {
                         <View
                             style={[
                                 styles.messageBubble,
-                                message.sender === 'sent'
+                                message.type === 'PROMPT'
                                     ? styles.sentMessage
                                     : styles.receivedMessage,
                             ]}
