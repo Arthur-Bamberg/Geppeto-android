@@ -60,14 +60,14 @@ export const ChatScreen = ({ route }) => {
           }
     };
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         const newMessage = {
             type: 'PROMPT',
             content: inputMessage.trim(),
             idSection,
         };
 
-        const answerMessage = MessageService.create(newMessage);
+        const answerMessage = await MessageService.create(newMessage);
 
         setMessages([...messages, newMessage, answerMessage]);
         setInputMessage('');
