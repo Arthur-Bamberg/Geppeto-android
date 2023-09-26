@@ -5,6 +5,7 @@ import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
 import { ErrorModal } from '../../components/ErrorModal';
 import { UserService } from '../../services/UserService';
+import { SectionService } from '../../services/SectionService';
 import * as SecureStore from 'expo-secure-store';
 import text from './texts.json';
 
@@ -56,7 +57,7 @@ export const LoginScreen = () => {
 		} else if (!validatePassword(password)) {
 			handleError(text.password_error);
 		} else {
-			await UserService.login( email, password);
+			await UserService.login(email, password);
 
 			navigator.navigateToChatMenu();
 		}
@@ -74,7 +75,9 @@ export const LoginScreen = () => {
 		} else {
 			await UserService.register(fullName, email, password);
 
-			navigator.navigateToChat(0);
+			const section = await SectionService.create();
+
+			navigator.navigateToChat(section.idSection);
 		}
 	};
 

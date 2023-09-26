@@ -8,17 +8,13 @@ export class SectionService {
     static async get() {
 		const token = await SecureStore.getItemAsync('authToken');
 
-        try {
-            const { data } = await axios.get(SectionService.url, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+        const { data } = await axios.get(SectionService.url, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
 
-            return data;
-        } catch (error) {
-            console.error(error);
-        }
+        return data;
     }
 
     static async delete(idSection) {

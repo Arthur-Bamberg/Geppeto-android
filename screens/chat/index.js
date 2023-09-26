@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { ChatHeader } from '../../components/ChatHeader';
 import { Ionicons } from '@expo/vector-icons';
+// import { Audio } from 'expo-av';
+import Voice from '@react-native-voice/voice';
 import { styles } from './styles';
 import text from './texts.json';
 import { SectionService } from '../../services/SectionService';
@@ -14,6 +16,13 @@ export const ChatScreen = ({ route }) => {
     const [messages, setMessages] = useState([]);
     const [recording, setRecording] = useState(null);
 
+    Voice.onSpeechStart = () => console.log('started');
+    Voice.onSpeechEnd = () => console.log('ended');
+    Voice.onSpeechResults = (e) => {
+        console.log(e);
+    };
+    Voice.onSpeechError = (e) => console.error(e);
+
     useEffect(() => {
         getMessages();
     }, []);
@@ -24,11 +33,31 @@ export const ChatScreen = ({ route }) => {
     }
 
     const startRecording = async () => {
-        setRecording(true);
+        try {
+            await Voice.start('pt-BR');
+          } catch (e) {
+            console.error(e);
+          }
+
+        // await Audio.requestPermissionsAsync();
+        // const { recording } = await Audio.Recording.createAsync(
+        //     Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
+        // );
+
+        // setRecording(recording);
     };
 
     const stopRecording = async () => {
-        setRecording(null);
+        // setRecording(undefined);
+        // await recording.stopAndUnloadAsync();
+        // const uri = recording.getURI();
+
+        try {
+            // await Voice.stop();
+            setRecording(null);
+          } catch (e) {
+            console.error(e);
+          }
     };
 
     const sendMessage = () => {
@@ -38,9 +67,9 @@ export const ChatScreen = ({ route }) => {
             idSection,
         };
 
-        MessageService.create(newMessage);
+        const answerMessage = MessageService.create(newMessage);
 
-        setMessages([...messages, newMessage]);
+        setMessages([...messages, newMessage, answerMessage]);
         setInputMessage('');
     };
 
@@ -51,7 +80,7 @@ export const ChatScreen = ({ route }) => {
                 <FlatList
                     style={styles.flatList}
                     data={messages}
-                    keyExtractor={(index) => index.toString()}
+                    keyExtractor={(message) => message.guidMessage}
                     renderItem={({ item: message }) => (
                         <View
                             style={[

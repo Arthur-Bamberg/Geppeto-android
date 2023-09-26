@@ -20,7 +20,6 @@ export const ChatMenuScreen = () => {
             const sections = await SectionService.get();
             setSections(sections);
         } catch (error) {
-            console.log(error);
             await SectionService.logout();
             navigator.navigateToLogin();
         }
