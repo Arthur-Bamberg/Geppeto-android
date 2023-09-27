@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigator } from '../../utils/Navigator';
@@ -17,6 +17,11 @@ export const LoginScreen = () => {
 			navigator.navigateToChatMenu();
 		}
 	})();
+
+	const nameInput = useRef(null);
+	const emailInput = useRef(null);
+	const passwordInput = useRef(null);
+	const confirmPasswordInput = useRef(null);
 
 	const [mode, setMode] = useState(text.login);
 	const [fullName, setFullName] = useState('');
@@ -62,6 +67,15 @@ export const LoginScreen = () => {
 			navigator.navigateToChatMenu();
 		}
 	};
+
+	const handleSubmit = (nextInput, submitFunction) => {
+		if(!nextInput) {
+			submitFunction();
+			
+		} else {
+			nextInput.current.focus();
+		}
+	}
 
 	const handleRegister = async () => {
 		if (!validateEmail(email)) {
@@ -123,6 +137,8 @@ export const LoginScreen = () => {
 						placeholder={text.fullName}
 						value={fullName}
 						onChangeText={setFullName}
+						ref={nameInput}
+						onSubmitEditing={() => handleSubmit(emailInput)}
 					/>
 				) : null}
 				<TextInput
@@ -130,6 +146,8 @@ export const LoginScreen = () => {
 					placeholder={text.email}
 					value={email}
 					onChangeText={setEmail}
+					ref={emailInput}
+					onSubmitEditing={() => handleSubmit(passwordInput)}
 				/>
 				<View style={styles.inputContainer}>
 					<TextInput
@@ -138,6 +156,14 @@ export const LoginScreen = () => {
 						secureTextEntry={!passwordVisibility}
 						value={password}
 						onChangeText={setPassword}
+						ref={passwordInput}
+						onSubmitEditing={() => {
+							if (mode === text.register) {
+								handleSubmit(confirmPasswordInput);
+							} else {
+								handleSubmit(null, handleLogin);
+							}
+						}}
 					/>
 					<Ionicons
 						style={styles.visibilityIcon}
@@ -154,6 +180,8 @@ export const LoginScreen = () => {
 							secureTextEntry={!passwordVisibility}
 							value={confirmPassword}
 							onChangeText={setConfirmPassword}
+							ref={confirmPasswordInput}
+							onSubmitEditing={() => handleSubmit(null, handleRegister)}
 						/>
 						<Ionicons
 							style={styles.visibilityIcon}
