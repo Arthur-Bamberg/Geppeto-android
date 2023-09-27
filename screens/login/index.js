@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
@@ -23,6 +23,7 @@ export const LoginScreen = () => {
 	const passwordInput = useRef(null);
 	const confirmPasswordInput = useRef(null);
 
+	const [marginTop, setMarginTop] = useState(50);
 	const [mode, setMode] = useState(text.login);
 	const [fullName, setFullName] = useState('');
 	const [email, setEmail] = useState('');
@@ -62,9 +63,16 @@ export const LoginScreen = () => {
 		} else if (!validatePassword(password)) {
 			handleError(text.password_error);
 		} else {
-			await UserService.login(email, password);
+			const isLogged = await UserService.login(email, password);
 
-			navigator.navigateToChatMenu();
+			if(isLogged) {
+				setFullName('');
+				setEmail('');
+				setPassword('');
+				setConfirmPassword('');
+
+				navigator.navigateToChatMenu();
+			}
 		}
 	};
 
@@ -106,6 +114,9 @@ export const LoginScreen = () => {
 	};
 
 	const changeMode = (newMode = null) => {
+		setMarginTop(50);
+		Keyboard.dismiss();
+
 		if (typeof newMode !== 'string') {
 			newMode = mode === text.register ? text.login : text.register;
 		}
@@ -114,7 +125,7 @@ export const LoginScreen = () => {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.header}>
+			<View style={[styles.header, {marginTop}]}>
 				<Image
 					source={require('../../assets/logo.png')}
 					style={styles.image}
@@ -147,9 +158,16 @@ export const LoginScreen = () => {
 					value={email}
 					onChangeText={setEmail}
 					ref={emailInput}
+					onFocus={() => {
+						if(mode === text.register) {
+							setMarginTop(10);
+						}
+					}}
+					onBlur={() => setMarginTop(50)}
 					onSubmitEditing={() => handleSubmit(passwordInput)}
 				/>
-				<View style={styles.inputContainer}>
+				{mode !== text.reset_password ? (
+					<View style={styles.inputContainer}>
 					<TextInput
 						style={styles.input}
 						placeholder={text.password}
@@ -157,6 +175,14 @@ export const LoginScreen = () => {
 						value={password}
 						onChangeText={setPassword}
 						ref={passwordInput}
+						onFocus={() => {
+							if(mode === text.login) {
+								setMarginTop(10);
+							} else {
+								setMarginTop(-40);
+							}			
+						}}
+						onBlur={() => setMarginTop(50)}
 						onSubmitEditing={() => {
 							if (mode === text.register) {
 								handleSubmit(confirmPasswordInput);
@@ -172,6 +198,7 @@ export const LoginScreen = () => {
 						size={30}
 					/>
 				</View>
+				) : null}
 				{mode === text.register ? (
 					<View style={styles.inputContainer}>
 						<TextInput
@@ -181,6 +208,8 @@ export const LoginScreen = () => {
 							value={confirmPassword}
 							onChangeText={setConfirmPassword}
 							ref={confirmPasswordInput}
+							onFocus={() => setMarginTop(-110)}
+							onBlur={() => setMarginTop(50)}
 							onSubmitEditing={() => handleSubmit(null, handleRegister)}
 						/>
 						<Ionicons

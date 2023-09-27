@@ -42,8 +42,12 @@ export class UserService {
         'authToken',
         data.token
       );
+
+      return true;
     } catch (error) {
-      console.error(error);  
+      console.error(error);
+      
+      return false;
     }
   }
 }

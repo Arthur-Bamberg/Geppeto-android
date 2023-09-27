@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
       width: '100%'
     },
     header: {
-      marginTop: 50,
       width: '60%',
       maxHeight: 200,
       paddingVertical: 10,
