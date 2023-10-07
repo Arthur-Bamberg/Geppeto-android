@@ -1,10 +1,10 @@
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
-import * as ip from './ip.json';
+import * as config from './config.json';
 
 export class UserService {
-  static authenticateUrl = `http://${ip.address}:3000/auth`;
-  static userUrl = `http://${ip.address}:3000/users`;
+  static authenticateUrl = `${config.api_endpoint}/auth`;
+  static userUrl = `${config.api_endpoint}/users`;
 
   static async register(name, email, password) {
     try {

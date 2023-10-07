@@ -1,9 +1,9 @@
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
-import * as ip from './ip.json';
+import * as config from './config.json';
 
 export class SectionService {
-    static url = `http://${ip.address}:3000/sections`;
+    static url = `${config.api_endpoint}/sections`;
 
     static async get() {
 		const token = await SecureStore.getItemAsync('authToken');

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { Permissions } from "expo";
 import { ChatHeader } from '../../components/ChatHeader';
 import { Ionicons } from '@expo/vector-icons';
 // import { Audio } from 'expo-av';
@@ -14,30 +15,76 @@ export const ChatScreen = ({ route }) => {
 
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const [recording, setRecording] = useState(null);
+    const [recording, setRecording] = useState(false);
+    const [voicePermission, setVoicePermission] = useState(false);
 
-    Voice.onSpeechStart = () => console.log('started');
-    Voice.onSpeechEnd = () => console.log('ended');
-    Voice.onSpeechResults = (e) => {
-        console.log(e);
-    };
-    Voice.onSpeechError = (e) => console.error(e);
-
-    useEffect(() => {
+    useEffect(async () => {
         getMessages();
+
+        await setVoicePermissions();
     }, []);
+
+    const setVoicePermissions = async () => {
+        const { status, expires, permissions } = await Permissions.askAsync(
+            Permissions.AUDIO_RECORDING
+        );
+        if (status === "granted") {
+            setVoicePermission(true);
+
+            Voice.onSpeechStart = speechStartHandler;
+            Voice.onSpeechEnd = speechEndHandler;
+            Voice.onSpeechResults = speechResultsHandler;
+            Voice.onSpeechError = speechErrorHandler;
+
+            return () => {
+                Voice.destroy().then(Voice.removeAllListeners);
+            };
+        }
+    }
 
     const getMessages = async () => {
         const messages = await SectionService.getMessages(idSection);
         setMessages(messages);
     }
 
-    const startRecording = async () => {
+    const speechStartHandler = (e) => {
+        console.log('Speech start');
+    };
+
+    const speechEndHandler = (e) => {
+        console.log('Speech end');
+    };
+
+    const speechResultsHandler = (e) => {
+        console.log('Speech results: ', e);
+        setInputMessage(e.value[0]);
+    };
+
+    const speechErrorHandler = (e) => {
+        console.log('Speech error: ', e);
+    };
+
+    const startRecognizing = async () => {
+        setRecording(true);
+       
         try {
             await Voice.start('pt-BR');
-          } catch (e) {
+        } catch (e) {
             console.error(e);
-          }
+        }
+    }
+
+    const startRecording = async () => {
+        if(voicePermission) {
+            await startRecognizing();
+
+        } else {
+            await setVoicePermissions();
+
+            if(voicePermission) {
+                await startRecognizing();
+            }
+        }
 
         // await Audio.requestPermissionsAsync();
         // const { recording } = await Audio.Recording.createAsync(
@@ -53,24 +100,27 @@ export const ChatScreen = ({ route }) => {
         // const uri = recording.getURI();
 
         try {
-            // await Voice.stop();
-            setRecording(null);
-          } catch (e) {
+            await Voice.stop();
+            setRecording(false);
+            sendMessage();
+        } catch (e) {
             console.error(e);
-          }
+        }
     };
 
     const sendMessage = async () => {
-        const newMessage = {
-            type: 'PROMPT',
-            content: inputMessage.trim(),
-            idSection,
-        };
+        if (inputMessage.trim().length > 0) {
+            const newMessage = {
+                type: 'PROMPT',
+                content: inputMessage.trim(),
+                idSection,
+            };
 
-        const answerMessage = await MessageService.create(newMessage);
+            const answerMessage = await MessageService.create(newMessage);
 
-        setMessages([...messages, newMessage, answerMessage]);
-        setInputMessage('');
+            setMessages([...messages, newMessage, answerMessage]);
+            setInputMessage('');
+        }
     };
 
     return (

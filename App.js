@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { LoginScreen } from './screens/login';
 import { ChatScreen } from './screens/chat';
 import { ChatMenuScreen } from './screens/chatMenu';

@@ -15,7 +15,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +24,8 @@
       },
       "permissions": [
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "com.arthurbamberg.geppetoassistant"
     },
     "plugins": [
       [
@@ -34,7 +35,12 @@
           "speechRecognitionPermission": "CUSTOM: Allow $(PRODUCT_NAME) to securely recognize user speech"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "f8503df6-b350-49d8-afe6-c347e6932436"
+      }
+    }
   },
   "web": {
     "favicon": "./assets/favicon.png"
