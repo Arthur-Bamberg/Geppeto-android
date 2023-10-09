@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { styles } from './styles';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { useNavigator } from '../../utils/Navigator';
 import { ChatHeader } from '../../components/ChatHeader';
 import { Ionicons } from '@expo/vector-icons';
 import { SectionService } from '../../services/SectionService';
 
-export const ChatMenuScreen = () => {
-    const navigator = useNavigator();
-
+export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
     const [sections, setSections] = useState([]);
 
     useEffect(() => {
@@ -21,7 +18,7 @@ export const ChatMenuScreen = () => {
             setSections(sections);
         } catch (error) {
             await SectionService.logout();
-            navigator.navigateToLogin();
+            navigateTo('login');
         }
     };
 
@@ -35,12 +32,18 @@ export const ChatMenuScreen = () => {
     const createSection = async () => {
         const section = await SectionService.create();
         setSections([...sections, section]);
-        navigator.navigateToChat(section.idSection);
+        setIdSection(section.idSection);
+        navigateTo('chat');
     };
+
+    const navigateToChat = (idSection) => {
+        setIdSection(idSection);
+        navigateTo('chat');
+    }
 
     return (
         <View style={styles.container}>
-            <ChatHeader actualScreen={ 'ChatMenu' }/>
+            <ChatHeader actualScreen={ 'ChatMenu' } navigateTo={navigateTo}/>
             <FlatList
                 style={styles.chatItemsContainer}
                 data={sections}
@@ -48,7 +51,7 @@ export const ChatMenuScreen = () => {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.chatItem}
-                        onPress={()=> navigator.navigateToChat(item.idSection)} >
+                        onPress={()=> navigateToChat(item.idSection)} >
                         <Ionicons
                             name="chatbubble-ellipses-outline"
                             style={styles.chatIcon}

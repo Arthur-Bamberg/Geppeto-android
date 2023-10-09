@@ -1,19 +1,16 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
 import * as SecureStore from 'expo-secure-store';
 
-export const ChatHeader = ({ actualScreen }) => {
-	const navigator = useNavigator();
-
+export const ChatHeader = ({ actualScreen, navigateTo }) => {
 	const goBack = async () => {
 		if(actualScreen === 'ChatMenu') {
 			await SecureStore.setItemAsync('authToken', '');
-			navigator.navigateToLogin();
+			navigateTo('login');
 		} else if(actualScreen === 'Chat') {
-			navigator.navigateToChatMenu();
+			navigateTo('chatMenu');
 		}
 	};
 

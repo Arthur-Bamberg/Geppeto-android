@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigator } from '../../utils/Navigator';
 import { styles } from './styles';
 import { ErrorModal } from '../../components/ErrorModal';
 import { UserService } from '../../services/UserService';
@@ -9,12 +8,12 @@ import { SectionService } from '../../services/SectionService';
 import * as SecureStore from 'expo-secure-store';
 import text from './texts.json';
 
-export const LoginScreen = () => {
+export const LoginScreen = ({navigateTo, setIdSection}) => {
 	(async () => {
 		const token = await SecureStore.getItemAsync('authToken');
 
 		if (token) {
-			navigator.navigateToChatMenu();
+			navigateTo('chatMenu');
 		}
 	})();
 
@@ -34,8 +33,6 @@ export const LoginScreen = () => {
 
 	const [errorModalVisible, setErrorModalVisible] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
-
-	const navigator = useNavigator();
 
 	const validateEmail = (email) => {
 		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -71,7 +68,7 @@ export const LoginScreen = () => {
 				setPassword('');
 				setConfirmPassword('');
 
-				navigator.navigateToChatMenu();
+				navigateTo('chatMenu');
 			}
 		}
 	};
@@ -99,7 +96,9 @@ export const LoginScreen = () => {
 
 			const section = await SectionService.create();
 
-			navigator.navigateToChat(section.idSection);
+			setIdSection(section.idSection);
+
+			navigateTo('chat');
 		}
 	};
 

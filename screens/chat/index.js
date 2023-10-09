@@ -10,35 +10,35 @@ import text from './texts.json';
 import { SectionService } from '../../services/SectionService';
 import { MessageService } from '../../services/MessageService';
 
-export const ChatScreen = ({ route }) => {
-    const { idSection } = route.params;
-
+export const ChatScreen = ({ navigateTo, idSection }) => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [recording, setRecording] = useState(false);
     const [voicePermission, setVoicePermission] = useState(false);
 
-    useEffect(async () => {
+    useEffect(() => {
         getMessages();
 
-        await setVoicePermissions();
+        setVoicePermissions();
     }, []);
 
     const setVoicePermissions = async () => {
-        const { status, expires, permissions } = await Permissions.askAsync(
-            Permissions.AUDIO_RECORDING
-        );
-        if (status === "granted") {
-            setVoicePermission(true);
-
-            Voice.onSpeechStart = speechStartHandler;
-            Voice.onSpeechEnd = speechEndHandler;
-            Voice.onSpeechResults = speechResultsHandler;
-            Voice.onSpeechError = speechErrorHandler;
-
-            return () => {
-                Voice.destroy().then(Voice.removeAllListeners);
-            };
+        if(Permissions) {
+            const { status, expires, permissions } = await Permissions.askAsync(
+                Permissions.AUDIO_RECORDING
+            );
+            if (status === "granted") {
+                setVoicePermission(true);
+    
+                Voice.onSpeechStart = speechStartHandler;
+                Voice.onSpeechEnd = speechEndHandler;
+                Voice.onSpeechResults = speechResultsHandler;
+                Voice.onSpeechError = speechErrorHandler;
+    
+                return () => {
+                    Voice.destroy().then(Voice.removeAllListeners);
+                };
+            }
         }
     }
 
@@ -113,10 +113,12 @@ export const ChatScreen = ({ route }) => {
             const newMessage = {
                 type: 'PROMPT',
                 content: inputMessage.trim(),
-                idSection,
+                idSection
             };
 
             const answerMessage = await MessageService.create(newMessage);
+
+            newMessage.guidMessage = Date.now(); //unique key
 
             setMessages([...messages, newMessage, answerMessage]);
             setInputMessage('');
@@ -125,7 +127,7 @@ export const ChatScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <ChatHeader actualScreen={'Chat'} />
+            <ChatHeader actualScreen={'Chat'} navigateTo={navigateTo} />
             <View style={styles.chatContainer}>
                 <FlatList
                     style={styles.flatList}
@@ -151,6 +153,7 @@ export const ChatScreen = ({ route }) => {
                     placeholder={text.message}
                     value={inputMessage}
                     onChangeText={setInputMessage}
+                    onSubmitEditing={sendMessage}
                 />
                 <TouchableOpacity
                     style={styles.recordAudio}

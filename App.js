@@ -1,36 +1,30 @@
-import 'react-native-gesture-handler';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { LoginScreen } from './screens/login';
 import { ChatScreen } from './screens/chat';
 import { ChatMenuScreen } from './screens/chatMenu';
 import { useFonts } from 'expo-font';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
+	const [screen, setScreen] = useState('login');
+	const [idSection, setIdSection] = useState(0);
+
 	const [fontsLoaded] = useFonts({
 		'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
 		'Caveat': require('./assets/fonts/Caveat.ttf'),
 	});
-
-	const Stack = createStackNavigator();
-
 	if (!fontsLoaded) {
 		return null; // TODO: Add a loading screen
 	}
-
+	
 	return (
-		<NavigationContainer style={styles.container} >
-				<StatusBar style="auto" />
-				<Stack.Navigator 
-					initialRouteName="Login"
-					screenOptions={{ headerShown: false }}>
-					<Stack.Screen name="Login" component={LoginScreen} />
-					<Stack.Screen name="ChatMenu" component={ChatMenuScreen} />
-					<Stack.Screen name="Chat" component={ChatScreen} />
-				</Stack.Navigator>
-		</NavigationContainer>
+		<>
+			<StatusBar style="auto" />
+			{screen === 'login' && <LoginScreen navigateTo={setScreen} setIdSection={setIdSection}/>}
+			{screen === 'chatMenu' && <ChatMenuScreen navigateTo={setScreen} setIdSection={setIdSection}/>}
+			{screen === 'chat' && <ChatScreen navigateTo={setScreen} idSection={idSection}/>}
+		</>
 	);
 }
 
