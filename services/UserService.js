@@ -21,9 +21,13 @@ export class UserService {
       await SecureStore.setItemAsync(
         'authToken',
         data.token
-      ); 
+      );
+      
+      return true;
     } catch (error) {
       console.error(error);
+
+      return false;
     }
   }
 

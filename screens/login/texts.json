@@ -6,6 +6,8 @@
     "email_error": "Por favor, utilize um e-mail válido.",
     "password_error": "Por favor, utilize uma senha válida.",
     "fullName_error": "Por favor, insira seu nome completo.",
+    "register_error": "Erro ao registrar-se.",
+    "login_error": "Erro ao logar.",
     "login": "Entrar",
     "login_text": "Já possui uma conta? Entre",
     "register": "Cadastrar-se",

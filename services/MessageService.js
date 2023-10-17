@@ -8,18 +8,14 @@ export class MessageService {
     static async create(message) {
         const token = await SecureStore.getItemAsync('authToken');
 
-        try {
-            const response = await axios.post(MessageService.url, 
-                message, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            });
-    
-            return response.data;
-        } catch (error) {
-            console.error(error);
-        }
+        const response = await axios.post(MessageService.url, 
+            message, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+
+        return response.data;
     }
 }

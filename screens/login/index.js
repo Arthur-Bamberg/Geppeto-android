@@ -57,7 +57,7 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 	const handleLogin = async () => {
 		if (!validateEmail(email)) {
 			handleError(text.email_error);
-		} else if (!validatePassword(password)) {
+		} else if (password.trim() === '') {
 			handleError(text.password_error);
 		} else {
 			const isLogged = await UserService.login(email, password);
@@ -69,6 +69,9 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 				setConfirmPassword('');
 
 				navigateTo('chatMenu');
+
+			} else {
+				handleError(text.login_error);
 			}
 		}
 	};
@@ -92,13 +95,16 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 		} else if (password !== confirmPassword) {
 			handleError(text.password_match_error);
 		} else {
-			await UserService.register(fullName, email, password);
+			if(await UserService.register(fullName, email, password)) {
+				const section = await SectionService.create();
 
-			const section = await SectionService.create();
+				setIdSection(section.idSection);
+	
+				navigateTo('chat');
 
-			setIdSection(section.idSection);
-
-			navigateTo('chat');
+			} else {
+				handleError(text.register_error);
+			}
 		}
 	};
 

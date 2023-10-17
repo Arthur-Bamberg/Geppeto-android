@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { ChatHeader } from '../../components/ChatHeader';
+import { ErrorModal } from '../../components/ErrorModal';
 import { Ionicons } from '@expo/vector-icons';
 // import { Audio } from 'expo-av';
 import Voice from '@react-native-voice/voice';
@@ -13,6 +14,17 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [recording, setRecording] = useState(false);
+    const [errorModalVisible, setErrorModalVisible] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
+
+    const toggleErrorModal = () => {
+		setErrorModalVisible(!errorModalVisible);
+	};
+
+    const handleError = (errorMessage) => {
+		setErrorMessage(errorMessage);
+		setErrorModalVisible(true);
+	};
 
     useEffect(() => {
         getMessages();
@@ -30,8 +42,13 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     }
 
     const getMessages = async () => {
-        const messages = await SectionService.getMessages(idSection);
-        setMessages(messages);
+        try {
+            const messages = await SectionService.getMessages(idSection);
+            setMessages(messages);
+
+        } catch(error) {
+            handleError(error.message);
+        }
     }
 
     const speechStartHandler = (e) => {
@@ -94,12 +111,17 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
                 idSection
             };
 
-            const answerMessage = await MessageService.create(newMessage);
+            try {
+                const answerMessage = await MessageService.create(newMessage);
 
-            newMessage.guidMessage = Date.now(); //unique key
+                newMessage.guidMessage = Date.now(); //unique key
 
-            setMessages([...messages, newMessage, answerMessage]);
-            setInputMessage('');
+                setMessages([...messages, newMessage, answerMessage]);
+                setInputMessage('');
+
+            } catch(error) {
+                handleError(error.message);            
+            }
         }
     };
 
@@ -151,6 +173,11 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
                     />
                 </TouchableOpacity>
             </View>
+            <ErrorModal
+				errorMessage={errorMessage}
+				toggleErrorModal={toggleErrorModal}
+				errorModalVisible={errorModalVisible}
+			/>
         </View>
     );
 };

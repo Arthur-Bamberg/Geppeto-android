@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     errorModalContent: {
+        minWidth: 250,
         backgroundColor: colors.background,
         padding: 20,
         borderRadius: 10,
