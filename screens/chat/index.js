@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import { Permissions } from "expo";
 import { ChatHeader } from '../../components/ChatHeader';
 import { Ionicons } from '@expo/vector-icons';
 // import { Audio } from 'expo-av';
@@ -14,32 +13,20 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [recording, setRecording] = useState(false);
-    const [voicePermission, setVoicePermission] = useState(false);
 
     useEffect(() => {
         getMessages();
 
-        setVoicePermissions();
+        setVoiceFunctions();
     }, []);
 
-    const setVoicePermissions = async () => {
-        if(Permissions) {
-            const { status, expires, permissions } = await Permissions.askAsync(
-                Permissions.AUDIO_RECORDING
-            );
-            if (status === "granted") {
-                setVoicePermission(true);
-    
-                Voice.onSpeechStart = speechStartHandler;
-                Voice.onSpeechEnd = speechEndHandler;
-                Voice.onSpeechResults = speechResultsHandler;
-                Voice.onSpeechError = speechErrorHandler;
-    
-                return () => {
-                    Voice.destroy().then(Voice.removeAllListeners);
-                };
-            }
-        }
+    const setVoiceFunctions = () => {
+        Voice.onSpeechStart = speechStartHandler;
+        Voice.onSpeechEnd = speechEndHandler;
+        Voice.onSpeechResults = speechResultsHandler;
+        Voice.onSpeechError = speechErrorHandler;
+
+        Voice.destroy().then(Voice.removeAllListeners);
     }
 
     const getMessages = async () => {
@@ -75,16 +62,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     }
 
     const startRecording = async () => {
-        if(voicePermission) {
             await startRecognizing();
-
-        } else {
-            await setVoicePermissions();
-
-            if(voicePermission) {
-                await startRecognizing();
-            }
-        }
 
         // await Audio.requestPermissionsAsync();
         // const { recording } = await Audio.Recording.createAsync(
