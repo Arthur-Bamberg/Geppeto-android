@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     errorModalContent: {
-        backgroundColor: 'white',
+        backgroundColor: colors.background,
         padding: 20,
         borderRadius: 10,
         borderWidth: 3,
@@ -21,17 +21,19 @@ export const styles = StyleSheet.create({
     },
     errorText: {
         fontFamily: 'Roboto-Regular',
-        color: '#8B0000',
+        color: 'white',
         fontSize: 18,
         marginBottom: 10,
     },
     button: {
         marginTop: 20,
-        backgroundColor: colors.background,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         fontFamily: 'Roboto-Regular',
-        color: 'white',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
+    },
+    text: {
+        color: 'white'
     }
 });  

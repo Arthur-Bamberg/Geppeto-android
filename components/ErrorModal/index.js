@@ -9,7 +9,7 @@ export const ErrorModal = ({ errorMessage, toggleErrorModal, errorModalVisible }
                 <View style={styles.errorModalContent}>
                     <Text style={styles.errorText}>{errorMessage}</Text>
                     <Ionicons name="warning-outline" size={48} color="yellow" style={styles.warningIcon} />
-                    <TouchableOpacity title="Close" style={styles.button} onPress={toggleErrorModal}><Text>Close</Text></TouchableOpacity>
+                    <TouchableOpacity title="Close" style={styles.button} onPress={toggleErrorModal}><Text style={styles.text}>OK</Text></TouchableOpacity>
                 </View>
             </View>
         </Modal>
