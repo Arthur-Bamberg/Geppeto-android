@@ -130,8 +130,9 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
             <ChatHeader actualScreen={'Chat'} navigateTo={navigateTo} />
             <View style={styles.chatContainer}>
                 <FlatList
+                    inverted
                     style={styles.flatList}
-                    data={messages}
+                    data={messages.reverse()}
                     keyExtractor={(message) => message.guidMessage}
                     renderItem={({ item: message }) => (
                         <View
