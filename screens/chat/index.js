@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native'
 import { ChatHeader } from '../../components/ChatHeader';
 import { ErrorModal } from '../../components/ErrorModal';
 import { Ionicons } from '@expo/vector-icons';
-// import { Audio } from 'expo-av';
+import * as Speech from 'expo-speech';
 import Voice from '@react-native-voice/voice';
 import { styles } from './styles';
 import text from './texts.json';
@@ -27,7 +27,9 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
 	};
 
     useEffect(() => {
-        getMessages();
+        if(messages.length === 0) {
+            getMessages();
+        }
 
         setVoiceFunctions();
     }, []);
@@ -51,22 +53,13 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
         }
     }
 
-    const speechStartHandler = (e) => {
-        console.log('Speech start');
-    };
+    const speechStartHandler = (e) => {};
 
-    const speechEndHandler = (e) => {
-        console.log('Speech end');
-    };
+    const speechEndHandler = (e) => {};
 
-    const speechResultsHandler = (e) => {
-        console.log('Speech results: ', e);
-        setInputMessage(e.value[0]);
-    };
+    const speechResultsHandler = (e) => setInputMessage(e.value[0]);
 
-    const speechErrorHandler = (e) => {
-        console.log('Speech error: ', e);
-    };
+    const speechErrorHandler = (e) => handleError(e.error.message);
 
     const startRecognizing = async () => {
         setRecording(true);
@@ -79,21 +72,10 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     }
 
     const startRecording = async () => {
-            await startRecognizing();
-
-        // await Audio.requestPermissionsAsync();
-        // const { recording } = await Audio.Recording.createAsync(
-        //     Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY
-        // );
-
-        // setRecording(recording);
+        await startRecognizing();
     };
 
     const stopRecording = async () => {
-        // setRecording(undefined);
-        // await recording.stopAndUnloadAsync();
-        // const uri = recording.getURI();
-
         try {
             await Voice.stop();
             setRecording(false);
@@ -116,8 +98,10 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
 
                 newMessage.guidMessage = Date.now(); //unique key
 
-                setMessages([...messages, newMessage, answerMessage]);
+                setMessages([...messages, newMessage, answerMessage].reverse());
                 setInputMessage('');
+
+                Speech.speak(answerMessage.content, { language: 'pt-BR' });
 
             } catch(error) {
                 handleError(error.message);            
