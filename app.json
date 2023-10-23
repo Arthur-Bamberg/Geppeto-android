@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "geppeto-assistant",
+    "name": "Geppeto Assistant",
     "slug": "geppeto-assistant",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#230046"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,7 +20,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#230046"
       },
       "permissions": [
         "android.permission.RECORD_AUDIO"
