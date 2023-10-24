@@ -4,10 +4,10 @@
     "slug": "geppeto-assistant",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/logo.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#230046"
     },
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#230046"
       },
       "permissions": [
@@ -43,6 +43,6 @@
     }
   },
   "web": {
-    "favicon": "./assets/logo.png"
+    "favicon": "./assets/icon.png"
   }
 }

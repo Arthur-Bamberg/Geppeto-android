@@ -166,6 +166,8 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 					onFocus={() => {
 						if(mode === text.register) {
 							setMarginTop(10);
+						} else if(mode === text.reset_password) {
+							setMarginTop(0);
 						}
 					}}
 					onBlur={() => setMarginTop(50)}
@@ -182,7 +184,7 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 						ref={passwordInput}
 						onFocus={() => {
 							if(mode === text.login) {
-								setMarginTop(10);
+								setMarginTop(-50);
 							} else {
 								setMarginTop(-40);
 							}			
@@ -213,7 +215,7 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 							value={confirmPassword}
 							onChangeText={setConfirmPassword}
 							ref={confirmPasswordInput}
-							onFocus={() => setMarginTop(-110)}
+							onFocus={() => setMarginTop(-120)}
 							onBlur={() => setMarginTop(50)}
 							onSubmitEditing={() => handleSubmit(null, handleRegister)}
 						/>
