@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { styles } from './styles';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { ChatHeader } from '../../components/ChatHeader';
+import { LoadingAnimation } from '../../components/LoadingAnimation';
 import { ErrorModal } from '../../components/ErrorModal';
 import { Ionicons } from '@expo/vector-icons';
 import { SectionService } from '../../services/SectionService';
 
 export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
     const [sections, setSections] = useState([]);
+
+    const [loading, setLoading] = useState(false);
 
     const [errorModalVisible, setErrorModalVisible] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -27,9 +30,15 @@ export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
 
     const getSections = async () => {
         try {
+            setLoading(true);
+
             const sections = await SectionService.get();
             setSections(sections);
+
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
+
             handleError(error.message);
             await SectionService.logout();
             navigateTo('login');
@@ -37,16 +46,25 @@ export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
     };
 
     const deleteSections = async (idSection) => {
+        setLoading(true);
+
         await SectionService.delete(idSection);
 
         const newSections = sections.filter((section) => section.idSection != idSection);
         setSections(newSections);
+
+        setLoading(false);
     };
 
     const createSection = async () => {
+        setLoading(true);
+
         const section = await SectionService.create();
         setSections([...sections, section]);
         setIdSection(section.idSection);
+
+        setLoading(false);
+
         navigateTo('chat');
     };
 
@@ -81,6 +99,7 @@ export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
                     </TouchableOpacity>
                 )}
             />
+            {loading && <LoadingAnimation />}
             <TouchableOpacity
                 style={styles.plusButton}
                 onPress={createSection}>

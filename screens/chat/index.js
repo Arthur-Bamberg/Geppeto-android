@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { ChatHeader } from '../../components/ChatHeader';
+import { LoadingAnimation } from '../../components/LoadingAnimation';
 import { ErrorModal } from '../../components/ErrorModal';
 import { Ionicons } from '@expo/vector-icons';
 import * as Speech from 'expo-speech';
@@ -11,6 +12,8 @@ import { SectionService } from '../../services/SectionService';
 import { MessageService } from '../../services/MessageService';
 
 export const ChatScreen = ({ navigateTo, idSection }) => {
+    const [loading, setLoading] = useState(false);
+
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [recording, setRecording] = useState(false);
@@ -45,10 +48,15 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
 
     const getMessages = async () => {
         try {
+            setLoading(true);
+
             const messages = await SectionService.getMessages(idSection);
             setMessages(messages);
 
+            setLoading(false);
+
         } catch(error) {
+            setLoading(false);
             handleError(error.message);
         }
     }
@@ -66,19 +74,33 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
        
         try {
             await Voice.start('pt-BR');
+
+            setLoading(false);
+
         } catch (e) {
+            setLoading(false);
+
             console.error(e);
         }
     }
 
     const startRecording = async () => {
+        setLoading(true);
+
         await startRecognizing();
+
+        setLoading(false);
     };
 
     const stopRecording = async () => {
         try {
+            setLoading(true);
+
             await Voice.stop();
             setRecording(false);
+
+            setLoading(false);
+
             sendMessage();
         } catch (e) {
             console.error(e);
@@ -88,18 +110,24 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     const sendMessage = async () => {
         if (inputMessage.trim().length > 0) {
             const newMessage = {
+                guidMessage: Date.now(), // fake guid, used only to show the message in the screen
                 type: 'PROMPT',
                 content: inputMessage.trim(),
                 idSection
             };
 
             try {
+                setLoading(true);
+
+                setInputMessage('');
+
+                setMessages([...messages, newMessage].reverse());
+
                 const answerMessage = await MessageService.create(newMessage);
 
-                newMessage.guidMessage = Date.now(); //unique key
-
                 setMessages([...messages, newMessage, answerMessage].reverse());
-                setInputMessage('');
+
+                setLoading(false);
 
                 Speech.speak(answerMessage.content, { language: 'pt-BR' });
 
@@ -132,6 +160,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
                     )}
                 />
             </View>
+            {loading && <LoadingAnimation />}
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
