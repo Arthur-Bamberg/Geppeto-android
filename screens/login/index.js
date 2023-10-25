@@ -1,22 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
+import { LoadingAnimation } from '../../components/LoadingAnimation';
 import { ErrorModal } from '../../components/ErrorModal';
 import { UserService } from '../../services/UserService';
 import { SectionService } from '../../services/SectionService';
 import * as SecureStore from 'expo-secure-store';
 import text from './texts.json';
 
-export const LoginScreen = ({navigateTo, setIdSection}) => {
-	(async () => {
-		const token = await SecureStore.getItemAsync('authToken');
-
-		if (token) {
-			navigateTo('chatMenu');
-		}
-	})();
-
+export const LoginScreen = ({ navigateTo, setIdSection }) => {
 	const nameInput = useRef(null);
 	const emailInput = useRef(null);
 	const passwordInput = useRef(null);
@@ -27,12 +20,28 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 	const [fullName, setFullName] = useState('');
 	const [email, setEmail] = useState('');
 
+	const [loading, setLoading] = useState(false);
+
 	const [passwordVisibility, setPasswordVisibility] = useState(false);
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
 	const [errorModalVisible, setErrorModalVisible] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
+
+	useEffect(() => {
+		(async () => {
+			setLoading(true);
+
+			const token = await SecureStore.getItemAsync('authToken');
+
+			setLoading(false);
+
+			if (token) {
+				navigateTo('chatMenu');
+			}
+		})();
+	}, []);
 
 	const validateEmail = (email) => {
 		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,9 +69,13 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 		} else if (password.trim() === '') {
 			handleError(text.password_error);
 		} else {
+			setLoading(true);
+
 			const isLogged = await UserService.login(email, password);
 
-			if(isLogged) {
+			setLoading(false);
+
+			if (isLogged) {
 				setFullName('');
 				setEmail('');
 				setPassword('');
@@ -77,9 +90,9 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 	};
 
 	const handleSubmit = (nextInput, submitFunction) => {
-		if(!nextInput) {
+		if (!nextInput) {
 			submitFunction();
-			
+
 		} else {
 			nextInput.current.focus();
 		}
@@ -95,14 +108,20 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 		} else if (password !== confirmPassword) {
 			handleError(text.password_match_error);
 		} else {
-			if(await UserService.register(fullName, email, password)) {
+			setLoading(true);
+
+			if (await UserService.register(fullName, email, password)) {
 				const section = await SectionService.create();
 
+				setLoading(false);
+
 				setIdSection(section.idSection);
-	
+
 				navigateTo('chat');
 
 			} else {
+				setLoading(false);
+
 				handleError(text.register_error);
 			}
 		}
@@ -130,7 +149,7 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 
 	return (
 		<View style={styles.container}>
-			<View style={[styles.header, {marginTop}]}>
+			<View style={[styles.header, { marginTop }]}>
 				<Image
 					source={require('../../assets/logo.png')}
 					style={styles.image}
@@ -164,9 +183,9 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 					onChangeText={setEmail}
 					ref={emailInput}
 					onFocus={() => {
-						if(mode === text.register) {
+						if (mode === text.register) {
 							setMarginTop(10);
-						} else if(mode === text.reset_password) {
+						} else if (mode === text.reset_password) {
 							setMarginTop(0);
 						}
 					}}
@@ -175,36 +194,36 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 				/>
 				{mode !== text.reset_password ? (
 					<View style={styles.inputContainer}>
-					<TextInput
-						style={styles.input}
-						placeholder={text.password}
-						secureTextEntry={!passwordVisibility}
-						value={password}
-						onChangeText={setPassword}
-						ref={passwordInput}
-						onFocus={() => {
-							if(mode === text.login) {
-								setMarginTop(-50);
-							} else {
-								setMarginTop(-40);
-							}			
-						}}
-						onBlur={() => setMarginTop(50)}
-						onSubmitEditing={() => {
-							if (mode === text.register) {
-								handleSubmit(confirmPasswordInput);
-							} else {
-								handleSubmit(null, handleLogin);
-							}
-						}}
-					/>
-					<Ionicons
-						style={styles.visibilityIcon}
-						onPress={() => setPasswordVisibility(!passwordVisibility)}
-						name="eye"
-						size={30}
-					/>
-				</View>
+						<TextInput
+							style={styles.input}
+							placeholder={text.password}
+							secureTextEntry={!passwordVisibility}
+							value={password}
+							onChangeText={setPassword}
+							ref={passwordInput}
+							onFocus={() => {
+								if (mode === text.login) {
+									setMarginTop(-50);
+								} else {
+									setMarginTop(-40);
+								}
+							}}
+							onBlur={() => setMarginTop(50)}
+							onSubmitEditing={() => {
+								if (mode === text.register) {
+									handleSubmit(confirmPasswordInput);
+								} else {
+									handleSubmit(null, handleLogin);
+								}
+							}}
+						/>
+						<Ionicons
+							style={styles.visibilityIcon}
+							onPress={() => setPasswordVisibility(!passwordVisibility)}
+							name="eye"
+							size={30}
+						/>
+					</View>
 				) : null}
 				{mode === text.register ? (
 					<View style={styles.inputContainer}>
@@ -227,7 +246,7 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 						/>
 					</View>
 				) : null}
-				{mode === text.login ? (
+				{mode === text.login && !loading && (
 					<TouchableOpacity
 						style={[styles.button, styles.registerButton]}
 						onPress={() => {
@@ -238,19 +257,22 @@ export const LoginScreen = ({navigateTo, setIdSection}) => {
 							{text.reset_password_text}
 						</Text>
 					</TouchableOpacity>
-				) : null}
-				<TouchableOpacity
-					style={styles.button}
-					onPress={
-						mode === text.register
-							? handleRegister
-							: mode === text.reset_password
-								? handleResetPassword
-								: handleLogin
-					}
-				>
-					<Text style={styles.buttonText}>{mode}</Text>
-				</TouchableOpacity>
+				)}
+				{loading ? <LoadingAnimation style={styles.loading} />
+					: (
+						<TouchableOpacity
+							style={styles.button}
+							onPress={
+								mode === text.register
+									? handleRegister
+									: mode === text.reset_password
+										? handleResetPassword
+										: handleLogin
+							}
+						>
+							<Text style={styles.buttonText}>{mode}</Text>
+						</TouchableOpacity>
+					)}
 			</View>
 			<ErrorModal
 				errorMessage={errorMessage}

@@ -66,5 +66,8 @@ export const styles = StyleSheet.create({
     registerButton: {
       backgroundColor: colors.header,
       marginBottom: 20,
-    }
+    },
+    loading: {
+      paddingTop: 100,
+    },
   });
