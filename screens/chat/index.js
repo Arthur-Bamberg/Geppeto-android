@@ -38,12 +38,14 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     }, []);
 
     const setVoiceFunctions = () => {
-        Voice.onSpeechStart = speechStartHandler;
-        Voice.onSpeechEnd = speechEndHandler;
-        Voice.onSpeechResults = speechResultsHandler;
-        Voice.onSpeechError = speechErrorHandler;
+        if(Voice.onSpeechStart) {
+            Voice.onSpeechStart = speechStartHandler;
+            Voice.onSpeechEnd = speechEndHandler;
+            Voice.onSpeechResults = speechResultsHandler;
+            Voice.onSpeechError = speechErrorHandler;
 
-        Voice.destroy().then(Voice.removeAllListeners);
+            Voice.destroy().then(Voice.removeAllListeners);
+        }
     }
 
     const getMessages = async () => {
@@ -51,7 +53,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
             setLoading(true);
 
             const messages = await SectionService.getMessages(idSection);
-            setMessages(messages);
+            setMessages(messages.reverse());
 
             setLoading(false);
 
@@ -121,7 +123,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
 
                 setInputMessage('');
 
-                setMessages([...messages, newMessage].reverse());
+                setMessages([...messages.reverse(), newMessage]);
 
                 const answerMessage = await MessageService.create(newMessage);
 
@@ -129,7 +131,13 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
 
                 setLoading(false);
 
-                Speech.speak(answerMessage.content, { language: 'pt-BR' });
+                Speech.speak(answerMessage.content, 
+                    {
+                        language: 'pt-BR',
+                        voice: 'pt-br-x-afs#male_3-local',
+                        rate: 1.8
+                    }
+                );
 
             } catch(error) {
                 handleError(error.message);            
