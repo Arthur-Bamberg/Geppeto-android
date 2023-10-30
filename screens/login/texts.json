@@ -4,7 +4,7 @@
     "fullName": "Nome completo",
     "confirm_password": "Confirmar senha",
     "email_error": "Por favor, utilize um e-mail válido.",
-    "password_error": "Por favor, utilize uma senha válida.",
+    "password_error": "Por favor, insira uma senha com pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial entre @, $, !, %, *, ?, e a senha deve ter no mínimo 8 caracteres de comprimento.",
     "fullName_error": "Por favor, insira seu nome completo.",
     "register_error": "Erro ao registrar-se.",
     "login_error": "Erro ao logar.",

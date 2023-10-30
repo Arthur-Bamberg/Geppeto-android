@@ -49,7 +49,6 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 	};
 
 	const validatePassword = (password) => {
-		// TODO: Add password requirements to the error modal
 		const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 		return passwordPattern.test(password);
 	};
