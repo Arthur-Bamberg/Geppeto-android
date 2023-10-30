@@ -20,35 +20,26 @@ export class SectionService {
     static async delete(idSection) {
         const token = await SecureStore.getItemAsync('authToken');
 
-        try {
-            await axios.delete(`${SectionService.url}/${idSection}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-        } catch (error) {
-            console.error(error);
-        }
+        await axios.delete(`${SectionService.url}/${idSection}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
     }
 
     static async create() {
         const token = await SecureStore.getItemAsync('authToken');
 
-        try {
-            const response = await axios.post(SectionService.url, {
-                name: 'New Section',
-                temperature: 0.8
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            });
-    
-            return response.data;
-        } catch (error) {
-            console.error(error);
-        }
+        const response = await axios.post(SectionService.url, {
+            name: 'New Section'
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+
+        return response.data;
     }
 
     static async getMessages(idSection) {

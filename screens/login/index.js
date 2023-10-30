@@ -71,19 +71,19 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 		} else {
 			setLoading(true);
 
-			const isLogged = await UserService.login(email, password);
+			try {
+				await UserService.login(email, password);
 
-			setLoading(false);
+				setLoading(false);
 
-			if (isLogged) {
 				setFullName('');
 				setEmail('');
 				setPassword('');
 				setConfirmPassword('');
 
 				navigateTo('chatMenu');
-
-			} else {
+			} catch (error) {
+				setLoading(false);
 				handleError(text.login_error);
 			}
 		}
@@ -110,19 +110,23 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 		} else {
 			setLoading(true);
 
-			if (await UserService.register(fullName, email, password)) {
-				const section = await SectionService.create();
-
+			try {
+				if (await UserService.register(fullName, email, password)) {
+					const section = await SectionService.create();
+	
+					setLoading(false);
+	
+					setIdSection(section.idSection);
+	
+					navigateTo('chat');
+				} else {
+					setLoading(false);
+	
+					handleError(text.register_error);
+				}
+			} catch (error) {
 				setLoading(false);
-
-				setIdSection(section.idSection);
-
-				navigateTo('chat');
-
-			} else {
-				setLoading(false);
-
-				handleError(text.register_error);
+				handleError(error.message);
 			}
 		}
 	};

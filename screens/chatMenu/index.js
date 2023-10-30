@@ -48,24 +48,37 @@ export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
     const deleteSections = async (idSection) => {
         setLoading(true);
 
-        await SectionService.delete(idSection);
+        try {
+            await SectionService.delete(idSection);
 
-        const newSections = sections.filter((section) => section.idSection != idSection);
-        setSections(newSections);
+            const newSections = sections.filter((section) => section.idSection != idSection);
+            setSections(newSections);
 
-        setLoading(false);
+            setLoading(false);
+
+        } catch (error) {
+            setLoading(false);
+
+            handleError(error.message);
+        }
     };
 
     const createSection = async () => {
         setLoading(true);
 
-        const section = await SectionService.create();
-        setSections([...sections, section]);
-        setIdSection(section.idSection);
+        try {
+            const section = await SectionService.create();
+            setSections([...sections, section]);
+            setIdSection(section.idSection);
 
-        setLoading(false);
+            setLoading(false);
 
-        navigateTo('chat');
+            navigateTo('chat');
+
+        } catch (error) {
+            setLoading(false);
+            handleError(error.message);
+        }
     };
 
     const navigateToChat = (idSection) => {

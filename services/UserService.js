@@ -7,51 +7,37 @@ export class UserService {
   static userUrl = `${config.api_endpoint}/users`;
 
   static async register(name, email, password) {
-    try {
-      const { data } = await axios.post(UserService.userUrl, {
-        name,
-        email,
-        password
-      }, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
-  
-      await SecureStore.setItemAsync(
-        'authToken',
-        data.token
-      );
-      
-      return true;
-    } catch (error) {
-      console.error(error);
+    const { data } = await axios.post(UserService.userUrl, {
+      name,
+      email,
+      password
+    }, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
 
-      return false;
-    }
+    await SecureStore.setItemAsync(
+      'authToken',
+      data.token
+    );
+
+    return true;
   }
 
   static async login(email, password) {
-    try {
-      const { data } = await axios.post(UserService.authenticateUrl, {
-        email,
-        password
-      }, {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
-  
-      await SecureStore.setItemAsync(
-        'authToken',
-        data.token
-      );
+    const { data } = await axios.post(UserService.authenticateUrl, {
+      email,
+      password
+    }, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
 
-      return true;
-    } catch (error) {
-      console.error(error);
-      
-      return false;
-    }
+    await SecureStore.setItemAsync(
+      'authToken',
+      data.token
+    );
   }
 }

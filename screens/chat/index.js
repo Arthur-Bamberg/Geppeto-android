@@ -32,20 +32,21 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     useEffect(() => {
         if(messages.length === 0) {
             getMessages();
+
+        } else {
+            setMessages(messages);
         }
 
         setVoiceFunctions();
     }, []);
 
     const setVoiceFunctions = () => {
-        if(Voice.onSpeechStart) {
-            Voice.onSpeechStart = speechStartHandler;
-            Voice.onSpeechEnd = speechEndHandler;
-            Voice.onSpeechResults = speechResultsHandler;
-            Voice.onSpeechError = speechErrorHandler;
+        Voice.onSpeechStart = speechStartHandler;
+        Voice.onSpeechEnd = speechEndHandler;
+        Voice.onSpeechResults = speechResultsHandler;
+        Voice.onSpeechError = speechErrorHandler;
 
-            Voice.destroy().then(Voice.removeAllListeners);
-        }
+        Voice.destroy().then(Voice.removeAllListeners);
     }
 
     const getMessages = async () => {
@@ -82,7 +83,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
         } catch (e) {
             setLoading(false);
 
-            console.error(e);
+            handleError(e.message);
         }
     }
 
@@ -103,9 +104,8 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
 
             setLoading(false);
 
-            sendMessage();
         } catch (e) {
-            console.error(e);
+            handleError(e.message);
         }
     };
 
@@ -123,7 +123,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
 
                 setInputMessage('');
 
-                setMessages([...messages.reverse(), newMessage]);
+                setMessages([...messages.reverse(), newMessage].reverse());
 
                 const answerMessage = await MessageService.create(newMessage);
 
@@ -135,7 +135,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
                     {
                         language: 'pt-BR',
                         voice: 'pt-br-x-afs#male_3-local',
-                        rate: 1.8
+                        rate: 1.5
                     }
                 );
 
@@ -152,7 +152,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
                 <FlatList
                     inverted
                     style={styles.flatList}
-                    data={messages.reverse()}
+                    data={messages}
                     keyExtractor={(message) => message.guidMessage}
                     renderItem={({ item: message }) => (
                         <View
