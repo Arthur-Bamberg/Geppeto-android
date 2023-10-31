@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 import { ChatHeader } from '../../components/ChatHeader';
 import { LoadingAnimation } from '../../components/LoadingAnimation';
 import { ErrorModal } from '../../components/ErrorModal';
@@ -23,6 +24,10 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     const toggleErrorModal = () => {
 		setErrorModalVisible(!errorModalVisible);
 	};
+
+    const copyToClipboard = async (message) => {
+        await Clipboard.setStringAsync(message);
+    }
 
     const handleError = (errorMessage) => {
 		setErrorMessage(errorMessage);
@@ -155,16 +160,17 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
                     data={messages}
                     keyExtractor={(message) => message.guidMessage}
                     renderItem={({ item: message }) => (
-                        <View
+                        <TouchableOpacity
                             style={[
                                 styles.messageBubble,
                                 message.type === 'PROMPT'
                                     ? styles.sentMessage
                                     : styles.receivedMessage,
                             ]}
+                            onLongPress={() => copyToClipboard(message.content)}
                         >
                             <Text style={styles.messageText}>{message.content}</Text>
-                        </View>
+                        </TouchableOpacity>
                     )}
                 />
             </View>
