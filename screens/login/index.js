@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import { LoadingAnimation } from '../../components/LoadingAnimation';
@@ -130,13 +130,30 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 		}
 	};
 
-	const handleResetPassword = () => {
+	const handleResetPassword = async () => {
 		if (!validateEmail(email)) {
 			handleError(text.email_error);
 		} else if (fullName.trim() === '') {
 			handleError(text.fullName_error);
 		} else {
-			changeMode(text.login);
+			setLoading(true);
+
+			try {
+				if(!await UserService.resetPassword(fullName, email)) {
+					throw new Error();
+				}
+
+				Alert.alert(text.reset_password_title, text.reset_password_message, [
+					{text: 'OK'}
+				]);
+
+				setLoading(false);
+
+				changeMode(text.login);
+			} catch (error) {
+				setLoading(false);
+				handleError(text.reset_password_error);
+			}
 		}
 	};
 
@@ -193,7 +210,10 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 						}
 					}}
 					onBlur={() => setMarginTop(50)}
-					onSubmitEditing={() => handleSubmit(passwordInput)}
+					onSubmitEditing={() => mode === text.reset_password ? 
+											handleResetPassword()
+										:
+											handleSubmit(passwordInput)}
 				/>
 				{mode !== text.reset_password ? (
 					<View style={styles.inputContainer}>

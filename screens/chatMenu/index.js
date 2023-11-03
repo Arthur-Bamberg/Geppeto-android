@@ -4,13 +4,19 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { ChatHeader } from '../../components/ChatHeader';
 import { LoadingAnimation } from '../../components/LoadingAnimation';
 import { ErrorModal } from '../../components/ErrorModal';
+import { TextInputModal } from '../../components/TextInputModal';
 import { Ionicons } from '@expo/vector-icons';
 import { SectionService } from '../../services/SectionService';
+import text from './texts.json';
 
 export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
     const [sections, setSections] = useState([]);
 
     const [loading, setLoading] = useState(false);
+
+    const [isEditing, setIsEditing] = useState(false);
+
+    const [idSectionEditing, setIdSectionEditing] = useState(null);
 
     const [errorModalVisible, setErrorModalVisible] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -81,6 +87,36 @@ export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
         }
     };
 
+    const updateSection = async (name) => {
+        if(name.trim() != '') {
+            setLoading(true);
+
+            try {
+                await SectionService.update(idSectionEditing, name);
+
+                const newSections = sections.map((section) => {
+                    if(section.idSection == idSectionEditing) {
+                        section.name = name;
+                    }
+                    return section;
+                });
+                setSections(newSections);
+
+                setLoading(false);
+
+            } catch (error) {
+                setLoading(false);
+
+                handleError(error.message);
+            }
+        }
+    };
+
+    const clickIsEditing = (idSection) => {
+        setIdSectionEditing(idSection);
+        setIsEditing(true);
+    }
+
     const navigateToChat = (idSection) => {
         setIdSection(idSection);
         navigateTo('chat');
@@ -96,19 +132,29 @@ export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         style={styles.chatItem}
-                        onPress={()=> navigateToChat(item.idSection)} >
+                        onPress={()=> !isEditing && navigateToChat(item.idSection)} >
                         <Ionicons
                             name="chatbubble-ellipses-outline"
                             style={styles.chatIcon}
                             size={30} />
                         <Text numberOfLines={1} style={styles.chatText}>
-                            <Text style={styles.nameHighlight}>{item.name}:</Text> {item.lastMessage.content != undefined ? item.lastMessage.content : ''}
+                            <Text>
+                                <Text style={styles.nameHighlight}>{item.name}: </Text> 
+                                {item.lastMessage != undefined ? item.lastMessage : ''}
+                            </Text>
                         </Text>
-                        <Ionicons
-                            name="trash"
-                            style={styles.trashIcon}
-                            onPress={() => deleteSections(item.idSection)}
-                            size={30} />
+                        <View style={styles.iconsView}>
+                            <Ionicons
+                                name="pencil-outline"
+                                style={styles.pencilIcon}
+                                onPress={()=> clickIsEditing(item.idSection)}
+                                size={30} />
+                            <Ionicons
+                                name="trash-outline"
+                                style={styles.trashIcon}
+                                size={30}
+                                onPress={() => deleteSections(item.idSection)} />
+                        </View>
                     </TouchableOpacity>
                 )}
             />
@@ -122,6 +168,12 @@ export const ChatMenuScreen = ({navigateTo, setIdSection}) => {
 				errorMessage={errorMessage}
 				toggleErrorModal={toggleErrorModal}
 				errorModalVisible={errorModalVisible}
+			/>
+            <TextInputModal
+				TextInputMessage={text.newSectionName}
+				toggleTextInputModal={updateSection}
+				TextInputModalVisible={isEditing}
+                setVisible={setIsEditing}
 			/>
         </View>
     );

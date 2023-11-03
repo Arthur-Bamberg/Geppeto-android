@@ -115,7 +115,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
     };
 
     const sendMessage = async () => {
-        if (inputMessage.trim().length > 0) {
+        if (inputMessage.trim().length > 0 && !loading) {
             const newMessage = {
                 guidMessage: Date.now(), // fake guid, used only to show the message in the screen
                 type: 'PROMPT',

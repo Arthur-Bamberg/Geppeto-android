@@ -13,5 +13,7 @@
     "register": "Cadastrar-se",
     "register_text": "Não possui uma conta? Cadastre-se",
     "reset_password": "Esqueci minha senha",
-    "reset_password_text": "Esqueceu sua senha? Clique aqui"
+    "reset_password_text": "Esqueceu sua senha? Clique aqui",
+    "reset_password_title": "Email enviado",
+    "reset_password_message": "Verifique sua caixa de entrada para redefinir sua senha."
 }

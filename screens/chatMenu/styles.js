@@ -21,14 +21,23 @@ export const styles = StyleSheet.create({
     chatIcon: {
         color: colors.header,
     },
+    iconsView: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        marginLeft: 'auto',
+    },
+    pencilIcon: {
+        color: colors.header,
+        marginRight: 10,
+    },
     trashIcon: {
         color: colors.header,
-        marginLeft: 'auto',
     },
     chatText: {
         marginLeft: 10,
         fontSize: 16,
-        maxWidth: 300,
+        maxWidth: '70%',
         overflow: 'hidden',
         fontFamily: 'Roboto-Regular',
         color: colors.text,

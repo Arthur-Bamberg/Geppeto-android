@@ -5,6 +5,7 @@ import * as config from './config.json';
 export class UserService {
   static authenticateUrl = `${config.api_endpoint}/auth`;
   static userUrl = `${config.api_endpoint}/users`;
+  static resetPasswordUrl = `${config.api_endpoint}/send-email`;
 
   static async register(name, email, password) {
     const { data } = await axios.post(UserService.userUrl, {
@@ -39,5 +40,18 @@ export class UserService {
       'authToken',
       data.token
     );
+  }
+
+  static async resetPassword(name, email) {
+    const { data } = await axios.post(UserService.resetPasswordUrl, {
+      name,
+      email
+    }, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+
+    return data;
   }
 }
