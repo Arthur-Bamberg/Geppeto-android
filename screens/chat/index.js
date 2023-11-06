@@ -17,6 +17,7 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
 
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
+    const [talking, setTalking] = useState(false);
     const [recording, setRecording] = useState(false);
     const [errorModalVisible, setErrorModalVisible] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -114,6 +115,10 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
         }
     };
 
+    const stopVoice = async () => {
+        await Speech.stop();
+    }
+
     const sendMessage = async () => {
         if (inputMessage.trim().length > 0 && !loading) {
             const newMessage = {
@@ -143,6 +148,16 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
                         rate: 1.5
                     }
                 );
+
+                setTalking(true);
+
+                const interval = setInterval(async ()=> {
+                    if(!await Speech.isSpeakingAsync()) {
+                        setTalking(false);
+
+                        clearInterval(interval);
+                    }
+                }, 500);
 
             } catch(error) {
                 handleError(error.message);            
@@ -185,10 +200,18 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
                 />
                 <TouchableOpacity
                     style={styles.recordAudio}
-                    onPress={recording ? stopRecording : startRecording}
+                    onPress={recording ? 
+                                stopRecording :
+                                talking ?
+                                    stopVoice : 
+                                    startRecording}
                 >
                     <Ionicons
-                        name={recording ? 'pause-outline' : 'mic'}
+                        name={recording ? 
+                                'pause-outline' : 
+                                talking ?
+                                    'square' :
+                                    'mic'}
                         size={20}
                         color="white"
                     />

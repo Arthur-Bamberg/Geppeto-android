@@ -49,7 +49,8 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 	};
 
 	const validatePassword = (password) => {
-		const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+		const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/
+;
 		return passwordPattern.test(password);
 	};
 
@@ -83,7 +84,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 				navigateTo('chatMenu');
 			} catch (error) {
 				setLoading(false);
-				handleError(text.login_error);
+				handleError(error.response.data.message.pt ?? error.response.data.message);
 			}
 		}
 	};
@@ -125,7 +126,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 				}
 			} catch (error) {
 				setLoading(false);
-				handleError(error.message);
+				handleError(error.response.data.message.pt ?? error.response.data.message);
 			}
 		}
 	};
@@ -152,7 +153,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 				changeMode(text.login);
 			} catch (error) {
 				setLoading(false);
-				handleError(text.reset_password_error);
+				handleError(error.response.data.message.pt ?? error.response.data.message);
 			}
 		}
 	};
@@ -206,7 +207,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 						if (mode === text.register) {
 							setMarginTop(10);
 						} else if (mode === text.reset_password) {
-							setMarginTop(0);
+							setMarginTop(-30);
 						}
 					}}
 					onBlur={() => setMarginTop(50)}
@@ -226,7 +227,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 							ref={passwordInput}
 							onFocus={() => {
 								if (mode === text.login) {
-									setMarginTop(-50);
+									setMarginTop(-100);
 								} else {
 									setMarginTop(-40);
 								}
@@ -257,7 +258,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 							value={confirmPassword}
 							onChangeText={setConfirmPassword}
 							ref={confirmPasswordInput}
-							onFocus={() => setMarginTop(-120)}
+							onFocus={() => setMarginTop(-170)}
 							onBlur={() => setMarginTop(50)}
 							onSubmitEditing={() => handleSubmit(null, handleRegister)}
 						/>

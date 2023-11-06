@@ -1,10 +1,19 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, BackHandler } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import * as SecureStore from 'expo-secure-store';
 
 export const ChatHeader = ({ actualScreen, navigateTo }) => {
+
+	useEffect(() => {
+		BackHandler.addEventListener('hardwareBackPress', goBack);
+
+		return () => {
+			BackHandler.removeEventListener('hardwareBackPress', goBack);
+		};
+	}, []);
+	  
 	const goBack = async () => {
 		if(actualScreen === 'ChatMenu') {
 			await SecureStore.setItemAsync('authToken', '');
