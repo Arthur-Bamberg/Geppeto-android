@@ -1,0 +1,8 @@
+{
+    "fullName": "Nome completo",
+    "email_error": "Por favor, utilize um e-mail válido.",
+    "fullName_error": "Por favor, insira seu nome completo.",
+    "city": "Cidade",
+    "save_error": "Erro ao salvar.",
+    "save": "Salvar"
+}

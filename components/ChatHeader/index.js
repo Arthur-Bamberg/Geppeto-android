@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import * as SecureStore from 'expo-secure-store';
 
-export const ChatHeader = ({ actualScreen, navigateTo }) => {
+export const ChatHeader = ({ actualScreen, navigateTo, isUserScreen = false }) => {
 
 	useEffect(() => {
 		BackHandler.addEventListener('hardwareBackPress', goBack);
@@ -27,6 +27,7 @@ export const ChatHeader = ({ actualScreen, navigateTo }) => {
 		<View style={styles.header}>
 			<Ionicons name="arrow-back-outline" style={styles.backMenu} size={30} color="white" onPress={goBack} />
 			<Text style={styles.headerText}>Geppeto Assistant</Text>
+			{!isUserScreen && <Ionicons name="person" style={styles.backMenu} size={27} color="white" onPress={()=>navigateTo('user')} />}
 		</View>
 	);
 };

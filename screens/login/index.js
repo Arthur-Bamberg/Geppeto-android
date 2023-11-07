@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, Alert } from 
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import { LoadingAnimation } from '../../components/LoadingAnimation';
+import { SexPicker } from '../../components/SexPicker';
 import { ErrorModal } from '../../components/ErrorModal';
 import { UserService } from '../../services/UserService';
 import { SectionService } from '../../services/SectionService';
@@ -11,6 +12,7 @@ import text from './texts.json';
 
 export const LoginScreen = ({ navigateTo, setIdSection }) => {
 	const nameInput = useRef(null);
+	const cityInput = useRef(null);
 	const emailInput = useRef(null);
 	const passwordInput = useRef(null);
 	const confirmPasswordInput = useRef(null);
@@ -19,6 +21,8 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 	const [mode, setMode] = useState(text.login);
 	const [fullName, setFullName] = useState('');
 	const [email, setEmail] = useState('');
+	const [city, setCity] = useState('');
+	const [sex, setSex] = useState(null);
 
 	const [loading, setLoading] = useState(false);
 
@@ -50,7 +54,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 
 	const validatePassword = (password) => {
 		const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/
-;
+			;
 		return passwordPattern.test(password);
 	};
 
@@ -113,15 +117,15 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 			try {
 				if (await UserService.register(fullName, email, password)) {
 					const section = await SectionService.create();
-	
+
 					setLoading(false);
-	
+
 					setIdSection(section.idSection);
-	
+
 					navigateTo('chat');
 				} else {
 					setLoading(false);
-	
+
 					handleError(text.register_error);
 				}
 			} catch (error) {
@@ -140,12 +144,12 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 			setLoading(true);
 
 			try {
-				if(!await UserService.resetPassword(fullName, email)) {
+				if (!await UserService.resetPassword(fullName, email)) {
 					throw new Error();
 				}
 
 				Alert.alert(text.reset_password_title, text.reset_password_message, [
-					{text: 'OK'}
+					{ text: 'OK' }
 				]);
 
 				setLoading(false);
@@ -194,9 +198,29 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 						value={fullName}
 						onChangeText={setFullName}
 						ref={nameInput}
-						onSubmitEditing={() => handleSubmit(emailInput)}
+						onSubmitEditing={() => {
+							if(mode !== text.register) {
+								handleSubmit(emailInput);
+							} else {
+								handleSubmit(cityInput);
+							}
+						}}
 					/>
 				) : null}
+				{mode === text.register && (
+					<>
+						<TextInput
+							style={styles.input}
+							placeholder={text.city}
+							value={city}
+							onChangeText={setCity}
+							ref={cityInput}
+							onSubmitEditing={() => handleSubmit(emailInput)}
+							onFocus={() => setMarginTop(0) }
+						/>
+						<SexPicker selectedSex={sex} setSelectedSex={setSex} />
+					</>
+				)}
 				<TextInput
 					style={styles.input}
 					placeholder={text.email}
@@ -205,16 +229,16 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 					ref={emailInput}
 					onFocus={() => {
 						if (mode === text.register) {
-							setMarginTop(10);
+							setMarginTop(-150);
 						} else if (mode === text.reset_password) {
 							setMarginTop(-30);
 						}
 					}}
 					onBlur={() => setMarginTop(50)}
-					onSubmitEditing={() => mode === text.reset_password ? 
-											handleResetPassword()
-										:
-											handleSubmit(passwordInput)}
+					onSubmitEditing={() => mode === text.reset_password ?
+						handleResetPassword()
+						:
+						handleSubmit(passwordInput)}
 				/>
 				{mode !== text.reset_password ? (
 					<View style={styles.inputContainer}>
@@ -229,7 +253,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 								if (mode === text.login) {
 									setMarginTop(-100);
 								} else {
-									setMarginTop(-40);
+									setMarginTop(-210);
 								}
 							}}
 							onBlur={() => setMarginTop(50)}
@@ -258,7 +282,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 							value={confirmPassword}
 							onChangeText={setConfirmPassword}
 							ref={confirmPasswordInput}
-							onFocus={() => setMarginTop(-170)}
+							onFocus={() => setMarginTop(-350)}
 							onBlur={() => setMarginTop(50)}
 							onSubmitEditing={() => handleSubmit(null, handleRegister)}
 						/>
