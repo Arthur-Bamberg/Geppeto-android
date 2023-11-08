@@ -1,8 +1,11 @@
 {
     "fullName": "Nome completo",
-    "email_error": "Por favor, utilize um e-mail válido.",
     "fullName_error": "Por favor, insira seu nome completo.",
     "city": "Cidade",
+    "city_error": "Por favor, insira sua cidade.",
+    "delete_account": "Deletar conta",
+    "delete_account_confirmation": "Tem certeza que deseja deletar sua conta?",
+    "delete_account_error": "Erro ao deletar conta.",
     "save_error": "Erro ao salvar.",
     "save": "Salvar"
 }

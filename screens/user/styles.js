@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
 		width: '100%'
 	},
 	form: {
-		marginTop: 100,
+		marginTop: 20,
 		paddingHorizontal: 20,
 	},
 	inputContainer: {
@@ -31,6 +31,10 @@ export const styles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 20,
 		borderRadius: 5,
+	},
+	deleteButton: {
+		marginTop: 80,
+		backgroundColor: '#ae2c21'
 	},
 	buttonText: {
 		color: colors.text,

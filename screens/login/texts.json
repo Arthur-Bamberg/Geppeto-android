@@ -3,6 +3,7 @@
     "password": "Senha",
     "fullName": "Nome completo",
     "city": "Cidade",
+    "city_error": "Por favor, insira sua cidade.",
     "confirm_password": "Confirmar senha",
     "email_error": "Por favor, utilize um e-mail válido.",
     "password_error": "Por favor, insira uma senha com pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial entre @, $, !, %, *, ?, e a senha deve ter no mínimo 8 caracteres de comprimento.",

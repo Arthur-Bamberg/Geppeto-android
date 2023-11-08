@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Keyboard, Alert } from 'react-native';
+import { View, ScrollView, Text, TextInput, TouchableOpacity, Image, Keyboard, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import { LoadingAnimation } from '../../components/LoadingAnimation';
 import { SexPicker } from '../../components/SexPicker';
 import { ErrorModal } from '../../components/ErrorModal';
+import { CodeAuthor } from '../../components/CodeAuthor';
 import { UserService } from '../../services/UserService';
 import { SectionService } from '../../services/SectionService';
 import * as SecureStore from 'expo-secure-store';
@@ -109,13 +110,15 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 			handleError(text.password_error);
 		} else if (fullName.trim() === '') {
 			handleError(text.fullName_error);
+		} else if (city.trim() === '') {
+			handleError(text.city_error);
 		} else if (password !== confirmPassword) {
 			handleError(text.password_match_error);
 		} else {
 			setLoading(true);
 
 			try {
-				if (await UserService.register(fullName, email, password)) {
+				if (await UserService.register(fullName, city, sex, email, password)) {
 					const section = await SectionService.create();
 
 					setLoading(false);
@@ -173,7 +176,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 	};
 
 	return (
-		<View style={styles.container}>
+		<ScrollView style={styles.container}>
 			<View style={[styles.header, { marginTop }]}>
 				<Image
 					source={require('../../assets/logo.png')}
@@ -199,7 +202,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 						onChangeText={setFullName}
 						ref={nameInput}
 						onSubmitEditing={() => {
-							if(mode !== text.register) {
+							if (mode !== text.register) {
 								handleSubmit(emailInput);
 							} else {
 								handleSubmit(cityInput);
@@ -216,7 +219,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 							onChangeText={setCity}
 							ref={cityInput}
 							onSubmitEditing={() => handleSubmit(emailInput)}
-							onFocus={() => setMarginTop(0) }
+							onFocus={() => setMarginTop(0)}
 						/>
 						<SexPicker selectedSex={sex} setSelectedSex={setSex} />
 					</>
@@ -322,11 +325,12 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 						</TouchableOpacity>
 					)}
 			</View>
+			<CodeAuthor />
 			<ErrorModal
 				errorMessage={errorMessage}
 				toggleErrorModal={toggleErrorModal}
 				errorModalVisible={errorModalVisible}
 			/>
-		</View>
+		</ScrollView>
 	);
 };

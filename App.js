@@ -16,7 +16,7 @@ export default function App() {
 		'Caveat': require('./assets/fonts/Caveat.ttf'),
 	});
 	if (!fontsLoaded) {
-		return <LoadingAnimation />;
+		return null;
 	}
 	
 	return (
@@ -24,7 +24,7 @@ export default function App() {
 			<StatusBar style="auto" />
 			{screen === 'login' && <LoginScreen navigateTo={setScreen} setIdSection={setIdSection}/>}
 			{screen === 'chatMenu' && <ChatMenuScreen navigateTo={setScreen} setIdSection={setIdSection}/>}
-			{screen === 'user' && <UserScreen navigateTo={setScreen} setIdSection={setIdSection}/>}
+			{screen === 'user' && <UserScreen navigateTo={setScreen}/>}
 			{screen === 'chat' && <ChatScreen navigateTo={setScreen} idSection={idSection}/>}
 		</>
 	);
