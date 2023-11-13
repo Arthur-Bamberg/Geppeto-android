@@ -200,7 +200,8 @@ export const ChatScreen = ({ navigateTo, idSection }) => {
                 />
                 <TouchableOpacity
                     style={styles.recordAudio}
-                    onPress={recording ? 
+                    onPress={!loading && 
+                            recording ? 
                                 stopRecording :
                                 talking ?
                                     stopVoice : 

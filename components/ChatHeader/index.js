@@ -27,7 +27,10 @@ export const ChatHeader = ({ actualScreen, navigateTo, isUserScreen = false }) =
 		<View style={styles.header}>
 			<Ionicons name="arrow-back-outline" style={styles.backMenu} size={30} color="white" onPress={goBack} />
 			<Text style={styles.headerText}>Geppeto Assistant</Text>
-			{!isUserScreen && <Ionicons name="person" style={styles.backMenu} size={27} color="white" onPress={()=>navigateTo('user')} />}
+			{!isUserScreen ? 
+				<Ionicons name="person" size={27} color="white" onPress={()=>navigateTo('user')} />
+				: <View style={{width: 27}}></View>
+			}
 		</View>
 	);
 };

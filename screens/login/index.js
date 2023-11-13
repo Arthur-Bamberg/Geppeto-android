@@ -89,7 +89,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 				navigateTo('chatMenu');
 			} catch (error) {
 				setLoading(false);
-				handleError(error.response.data.message.pt ?? error.response.data.message);
+				handleError(error.response.data.message.pt ?? error.response.data.message ?? error.message);
 			}
 		}
 	};
@@ -133,7 +133,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 				}
 			} catch (error) {
 				setLoading(false);
-				handleError(error.response.data.message.pt ?? error.response.data.message);
+				handleError(error.response.data.message.pt ?? error.response.data.message ?? error.message);
 			}
 		}
 	};
@@ -160,7 +160,7 @@ export const LoginScreen = ({ navigateTo, setIdSection }) => {
 				changeMode(text.login);
 			} catch (error) {
 				setLoading(false);
-				handleError(error.response.data.message.pt ?? error.response.data.message);
+				handleError(error.response.data.message.pt ?? error.response.data.message ?? error.message);
 			}
 		}
 	};
